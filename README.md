@@ -48,7 +48,7 @@ npm run dev
 | 建置指令 | `npm run build` |
 | 輸出目錄 | `public` |
 
-正式專案已連接 `main` 分支，推送更新會自動部署。
+正式專案已連接 `main` 分支；亦可在專案目錄使用 `npx vercel --prod` 發布。
 
 ## 資料從哪裡來
 

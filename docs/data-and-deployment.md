@@ -5,7 +5,7 @@
 - 正式網站：https://macau-weather.vercel.app
 - 正式 API：https://macau-weather.vercel.app/api/weather
 - GitHub：https://github.com/HiNesslio/macau-weather
-- Vercel 已連接 GitHub 的 `main` 分支，推送更新會自動部署。
+- Vercel 已連接 GitHub 的 `main` 分支。
 
 ## 部署到 Vercel
 

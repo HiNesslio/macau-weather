@@ -1,5 +1,5 @@
 """從可編輯 SVG 版面及真實截圖製作 README GIF／靜態備援。
-需要 Pillow、rsvg-convert、ffmpeg，以及 beautify-github-readme 的 render_motion_gif.py。
+需要 Pillow、NumPy、rsvg-convert、ffmpeg，以及 beautify-github-readme 的 render_motion_gif.py。
 """
 import argparse, base64, copy, subprocess, tempfile
 from pathlib import Path

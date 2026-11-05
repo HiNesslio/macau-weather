@@ -17,3 +17,13 @@ Composition：背景證據與低密度標題整合。
 GIF 使用 SVG 版面與實際頁面截圖製作；不使用生成圖片。SVG 保留為可編輯來源，另輸出 PNG 靜態備援，README 嵌入 GIF。GIF 的資料是錄製當刻的畫面，並非讀者當下的即時天氣。
 
 當日高低溫顯示預測值，來自 c_7daysforecast.xml；截圖須使用修正後介面。
+
+## 重新輸出
+
+安裝 Pillow、NumPy、rsvg-convert 及 ffmpeg 後，使用指定 skill 所附的渲染器：
+
+```sh
+python3 scripts/render-readme.py --renderer /path/to/beautify-github-readme/scripts/render_motion_gif.py
+```
+
+先用 SVG 版面與真實截圖輸出逐格 GIF，再無損最佳化相同色盤下的差異畫格；輸出期間逐格驗證可見像素與透明度不變。`intro.png` 為靜態備援，`intro-layout.svg` 保留可編輯版面。
