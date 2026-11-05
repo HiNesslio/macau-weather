@@ -2,11 +2,16 @@
   "name": "macau-weather-live",
   "private": true,
   "type": "module",
-  "engines": { "node": "22.x" },
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "build": "node scripts/build.js",
     "dev": "node scripts/dev.js",
     "test": "node --test"
   },
-  "dependencies": { "fast-xml-parser": "^5.0.0" }
+  "dependencies": {
+    "fast-xml-parser": "^5.0.0"
+  },
+  "license": "MIT"
 }

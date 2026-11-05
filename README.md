@@ -79,6 +79,6 @@ npm run build
 - 雲層來自使用者提供的 `apple-weather-cloud-kit.zip`，依套件說明可自由使用、修改與商用。
 - 警告圖示採用未修改的 SMG 官方原圖，來源記錄於[資料說明](./docs/data-and-deployment.md)。
 - Open-Meteo 資料須依 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 標示來源；免費 API 限非商業用途，商用請採用其[授權方案](https://open-meteo.com/en/pricing)。
-- 本儲存庫尚未指定程式碼授權；公開可見不代表授予其他使用權。
+- 程式碼採用 [MIT 授權](./LICENSE)。第三方資料、圖示及素材仍依各自條款使用。
 
 GIF 的可編輯版面、動作設定及原始截圖位於 [`assets/readme/source/`](./assets/readme/source/)。
