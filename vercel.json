@@ -3,7 +3,7 @@
   "framework": null,
   "buildCommand": "npm run build",
   "outputDirectory": "public",
-  "functions": { "api/weather.js": { "maxDuration": 15 } },
+  "functions": { "api/weather.js": { "maxDuration": 15 }, "api/warnings.js": { "maxDuration": 10 } },
   "headers": [{ "source": "/(.*)", "headers": [
     { "key": "X-Content-Type-Options", "value": "nosniff" },
     { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },

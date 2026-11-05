@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<MonsoonWarning xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Monsoon.xsd">
+ <System>
+  <SysAuthor>SMG</SysAuthor>
+  <SysPubdate>2026-09-13 14:20 GMT+8</SysPubdate>
+  <SysLanguage>0</SysLanguage>
+ </System>
+ <ReportInfo>
+   <ReportType>WARNING</ReportType>
+   <ReportNo></ReportNo>
+   <RecordId></RecordId>
+ </ReportInfo>
+ <Custom>
+  <Monsoon>
+   <Action>NIL</Action>
+   <IssuedAt>2026-09-13 14:20</IssuedAt>
+   <SignalChangedAt></SignalChangedAt>
+   <Status>0</Status>
+   <Icon>
+    <IconURL></IconURL>
+   </Icon>
+   <Description>現時沒有季候風黑球警告。</Description>
+   <TTS></TTS>
+  </Monsoon>
+ </Custom>
+</MonsoonWarning>

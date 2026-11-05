@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<StormsurgeWarning xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Stormsurge.xsd">
+ <System>
+  <SysAuthor>SMG</SysAuthor>
+  <SysPubdate>2025-10-05 13:00 GMT+8</SysPubdate>
+  <SysLanguage>0</SysLanguage>
+ </System>
+ <ReportInfo>
+   <ReportType>WARNING</ReportType>
+   <ReportNo></ReportNo>
+   <RecordId></RecordId>
+ </ReportInfo>
+ <Custom>
+  <Stormsurge>
+   <Warncode>NIL</Warncode>
+   <Action>NIL</Action>
+   <IssuedAt>2025-10-05 13:00</IssuedAt>
+   <Inforce>0</Inforce>
+   <Status>0</Status>
+   <Icon>
+    <IconURL></IconURL>
+   </Icon>
+   <Description>現時沒有風暴潮警告。</Description>
+   <TTS></TTS>
+   <Misc></Misc>
+   <Complementary>
+    <AffectedAreas>
+     <Macao></Macao>
+     <Taipa></Taipa>
+     <Coloane></Coloane>
+    </AffectedAreas>
+    <Precautions></Precautions>
+   </Complementary>
+  </Stormsurge>
+ </Custom>
+</StormsurgeWarning>
+

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<RainstormWarning xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Rainstorm.xsd">
+ <System>
+  <SysAuthor>SMG</SysAuthor>
+  <SysPubdate>2026-10-04 23:25 GMT+8</SysPubdate>
+  <SysLanguage>0</SysLanguage>
+ </System>
+ <ReportInfo>
+   <ReportTitle>RAINSTORM</ReportTitle>
+   <ReportType>WARNING</ReportType>
+   <ReportNo></ReportNo>
+   <RecordId></RecordId>
+ </ReportInfo>
+ <Custom>
+  <Rainstorm>
+   <Warncode>NIL</Warncode>
+   <Action>NIL</Action>
+   <IssuedAt>2026-10-04 23:25</IssuedAt>
+   <SignalChangedAt></SignalChangedAt>
+   <Inforce>0</Inforce>
+   <Status>0</Status>
+   <Icon>
+    <IconURL></IconURL>
+   </Icon>
+   <Description>現時沒有暴雨警告信號。</Description>
+   <TTS></TTS>
+   <Complementary>
+    <Tips></Tips>
+    <Other></Other>
+   </Complementary>   
+  </Rainstorm>
+ </Custom>
+</RainstormWarning>

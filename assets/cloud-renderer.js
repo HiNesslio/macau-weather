@@ -8,7 +8,7 @@ const layers=[
 const recipes={sunny:[1,.10,.20,.20,.05],partly:[1,.30,.55,.55,.20],cloudy:[1.1,.60,.80,.90,.60],overcast:[.85,.85,1,1,.95],rain:[1.35,.90,1,1,1],storm:[1.7,1,1,1,1]};
 export class CloudRenderer {
  constructor(onReady){this.images={};this.cache={};this.current=recipes.cloudy.slice();this.offsets=[0,0,0,0];
-   this.ready=Promise.allSettled(layers.map(l=>new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>{this.images[l.id]=im;resolve();};im.onerror=reject;im.src=new URL(`./clouds/${l.id}.webp`,import.meta.url).href;}))).then(onReady);
+   this.ready=Promise.allSettled(layers.map(l=>new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>{this.images[l.id]=im;resolve();};im.onerror=reject;im.src=new URL(`./clouds/${l.id}.png`,import.meta.url).href;}))).then(onReady);
  }
  resize(width,height){if(this.width===width&&this.height===height)return;this.width=width;this.height=height;this.cache={};}
  sprite(layer){

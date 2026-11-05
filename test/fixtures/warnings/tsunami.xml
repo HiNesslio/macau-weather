@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TsunamiWarning xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Tsunami.xsd">
+ <System>
+  <SysAuthor>SMG</SysAuthor>
+  <SysPubdate>2023-01-17 12:27 GMT+8</SysPubdate>
+  <SysLanguage>0</SysLanguage>
+ </System>
+ <ReportInfo>
+   <ReportTitle>TSUNAMI</ReportTitle> 
+   <ReportType>WARNING</ReportType>
+   <ReportNo></ReportNo>
+   <RecordId></RecordId>
+ </ReportInfo>
+ <Custom>
+  <Tsunami>
+   <Warncode>NIL</Warncode>
+   <Action>NIL</Action>
+   <IssuedAt>2023-01-17 12:27</IssuedAt>
+   <Inforce>0</Inforce>
+   <Status>0</Status>
+   <Icon>
+    <IconURL></IconURL>
+   </Icon>
+   <Description>現時沒有海嘯警告信號。</Description>
+   <TTS></TTS>
+   <Complementary>
+    <EQ></EQ>
+    <Tips></Tips>
+    <Other></Other>
+   </Complementary>
+  </Tsunami>
+  <Correction>0</Correction>
+ </Custom>
+</TsunamiWarning>

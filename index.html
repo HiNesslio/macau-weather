@@ -81,6 +81,22 @@
 .weather-shell[data-condition="unknown"] .celestial,.weather-shell[data-condition="unknown"] .rays{opacity:0}
 .atmosphere:after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:rgba(245,171,99,var(--golden,0));mix-blend-mode:soft-light}
 @media(max-width:720px){.hero{min-height:800px}.hero-main{min-height:555px;padding-top:240px}.hero-dock{padding-bottom:90px}.environment-panel{padding:22px 18px}.environment-panel .panel-header{align-items:flex-start;flex-direction:column;gap:6px}.data-table th,.data-table td{padding:12px}.forecast-areas{gap:12px}.forecast-areas>div{padding-right:8px}.forecast-areas strong{font-size:26px}.forecast-areas small{font-size:10px}.section-header .caption{white-space:normal;text-align:right}.navlinks{gap:18px}.air-foot{max-width:none}}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.hero{min-height:0}.nav{height:84px}.hero-main{padding-top:32px;min-height:355px}.celestial{top:135px;width:195px;right:13%}
+.hero-dock{padding:16px 0 78px;display:flex;align-items:center;justify-content:space-between;gap:20px}.dock-head{order:2;margin:0}.update-line{text-align:left;max-width:none;opacity:.85}.highlow{margin-top:18px}.condition-name{font-size:32px}.condition-desc{font-size:14px}.temp{font-size:150px}
+.live-details{position:relative;z-index:8;margin-top:0}.live-details .metrics{background:var(--glass);border:1px solid color-mix(in srgb,var(--hero-ink) 14%,transparent);border-radius:22px;backdrop-filter:blur(18px);padding:0;color:var(--hero-ink)}
+.live-details .metric{padding:18px 24px;border-color:color-mix(in srgb,var(--hero-ink) 13%,transparent)}.live-details .metric-title,.live-details .metric-caption,.live-details .metric-value small{color:var(--hero-soft)}.live-details .metric-value{margin-top:8px;font-size:34px}.live-details .metric-title{font-size:13px}.live-details .metric-caption{font-size:11px;margin-top:5px;min-height:17px}.live-details .metric-title svg{color:inherit}
+.warning-region{position:relative;z-index:9;margin:0 0 4px}.warning-summary{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:12px;color:var(--hero-soft);padding:6px 0 8px}.warning-summary a{white-space:nowrap;text-underline-offset:3px}.warning-region[data-mode="active"] .warning-summary{color:var(--hero-ink);font-size:14px;font-weight:650}.warning-region[data-mode="uncertain"] .warning-summary{color:#f4bd77}
+.warning-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.warning-cards:has(> :only-child){grid-template-columns:1fr}
+.warning-card{display:flex;align-items:flex-start;gap:18px;padding:22px;background:#fff4dd;border:1px solid #e8b963;border-left:5px solid #d58b20;border-radius:20px;color:#5b3a13;box-shadow:0 8px 30px #080f2414}
+.warning-card[data-severity="severe"],.warning-card[data-severity="critical"]{background:#fff0eb;border-color:#eda58f;border-left-color:#c4472c;color:#67281d}
+.warning-icon{flex:0 0 64px;display:grid;place-items:center;min-height:64px}.warning-icon img{width:64px;height:64px;object-fit:contain}.warning-icon svg{width:42px;height:42px}.warning-image-fallback{display:none}.warning-icon img.image-failed{display:none}.warning-icon img.image-failed+.warning-image-fallback{display:block}
+.warning-copy{min-width:0;flex:1}.warning-title-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.warning-title-line h2{font-size:22px;line-height:1.3;letter-spacing:-.04em;margin:0;font-weight:700}.warning-badge{font-size:11px;padding:4px 8px;border-radius:7px;background:#a6591619;white-space:nowrap}.warning-copy p{font-size:14px;line-height:1.7;margin:9px 0 0}.warning-meta{display:flex;gap:18px;font-size:12px;margin-top:12px;opacity:.85}.warning-meta a{text-decoration:underline;text-underline-offset:3px}.warning-notice{font-size:13px;color:var(--hero-ink);margin:4px 0 10px}.warning-unverified{font-weight:650}
+.hourly{padding-top:6px}.hour-scroller{margin-top:20px}.section-header{margin-top:32px}.sources{font-size:11px;line-height:1.9;margin:0!important}.footer{align-items:flex-start;margin-top:38px}.footer a{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:980px){.navlinks{gap:16px}.meta-label{margin-left:auto}.hero-main{padding-top:32px}}
+@media(max-width:720px){.nav{height:72px}.hero-main{padding-top:48px;min-height:320px}.celestial{width:114px;right:7%;top:167px}.temp{font-size:112px}.condition-name{font-size:29px}.condition-desc{font-size:13px;max-width:285px}.highlow{font-size:12px;gap:12px;margin-top:14px}.hero-dock{padding:13px 0 64px}.hero:after{height:80px}.live-details .metrics{grid-template-columns:repeat(2,minmax(0,1fr));border-radius:20px}.live-details .metric{padding:14px 18px}.live-details .metric:nth-child(2){border-right:0}.live-details .metric:nth-child(-n+2){border-bottom:1px solid color-mix(in srgb,var(--hero-ink) 13%,transparent)}.live-details .metric-value{font-size:30px;margin-top:5px}.live-details .metric-title{font-size:12px}.live-details .metric-caption{font-size:10px;min-height:14px;margin-top:2px}.live-details .metric-value small{font-size:12px}
+.warning-summary{font-size:11px;padding:3px 0 7px}.warning-cards{grid-template-columns:1fr;gap:10px}.warning-card{padding:17px 15px;gap:12px;border-radius:17px}.warning-icon{flex-basis:52px;min-height:52px}.warning-icon img{width:52px;height:52px}.warning-title-line h2{font-size:19px}.warning-copy p{font-size:13px}.warning-title-line{gap:7px}.warning-meta{font-size:11px;margin-top:10px}.has-warning .hero-main{padding-top:25px;min-height:290px}.section-header h2{font-size:22px}.hourly{padding-top:1px}.frost-action{width:34px;padding:0}.update-line{font-size:10px;max-width:275px}.footer{gap:8px}.sources{font-size:11px}}
 </style>
 </head>
 <body>
@@ -110,47 +126,52 @@
  <section class="hero" id="now">
   <div class="atmosphere" id="atmosphere" aria-hidden="true"><div class="sky-glow"></div><div class="rays"></div><div class="celestial" id="celestial"></div><canvas id="skyCanvas"></canvas><div class="flash-overlay" id="flashOverlay"></div></div>
   <div class="container">
-   <header class="nav"><a class="wordmark" href="#now" aria-label="澳門天氣，返回頁首"><span class="wordmark-mark"></span>澳門天氣 <small>MACAU WEATHER</small></a><nav class="navlinks" aria-label="主要導覽"><a href="#now">現在</a><a href="#hourly">每小時</a><a href="#week">七日預報</a><a href="#environment">城市環境</a><a href="#detail">天氣詳情</a></nav><div class="meta-label">正在更新 · SMG</div></header>
+   <header class="nav"><a class="wordmark" href="#now" aria-label="澳門天氣，返回頁首"><span class="wordmark-mark"></span>澳門天氣 <small>MACAU WEATHER</small></a><nav class="navlinks" aria-label="主要導覽"><a href="#now">現在</a><a href="#detail">即時詳情</a><a href="#hourly">每小時</a><a href="#week">七日預報</a><a href="#environment">城市環境</a></nav><div class="meta-label">正在更新 · SMG</div></header>
+   <section class="warning-region" id="warningRegion" aria-label="氣象警告" data-mode="loading">
+    <div class="warning-summary"><span id="warningSummary" role="status">正在查詢氣象警告</span><a href="https://www.smg.gov.mo/zh" target="_blank" rel="noopener noreferrer">氣象局 ↗</a></div>
+    <div class="warning-cards" id="warningCards"></div><p class="warning-notice" id="warningNotice" hidden></p>
+   </section>
    <div class="hero-main">
     <div class="location"><svg width="17" height="17"><use href="#i-pin"/></svg><span>澳門</span><span class="small-dot"></span><span id="dateLabel">11 月 5 日</span></div>
     <div class="temp" id="temperatureLine"><span id="currentTemp">—</span><span class="unit">°</span></div>
     <div class="condition-name" id="conditionName">正在取得實況</div><div class="condition-desc" id="conditionDescription">正在讀取澳門氣象局資料。</div>
     <div class="highlow"><span>今日最高 <strong id="hi">—</strong>　最低 <strong id="lo">—</strong></span><span>體感評級 <strong id="feels">—</strong></span><span id="nightMessage">日間場景</span></div>
    </div>
+   <section id="detail" class="live-details" aria-label="即時天氣詳情"><div class="metrics">
+   <div class="metric"><div class="metric-title"><svg><use href="#i-rain"/></svg>降雨機率</div><div class="metric-value" id="rainChance">—</div><div class="metric-caption">本小時預報</div></div>
+   <div class="metric"><div class="metric-title"><svg><use href="#i-wind"/></svg>風速</div><div class="metric-value" id="wind">—</div><div class="metric-caption" id="windDirection">未提供</div></div>
+   <div class="metric"><div class="metric-title"><svg><use href="#i-droplet"/></svg>相對濕度</div><div class="metric-value" id="humidity">—</div></div>
+   <div class="metric"><div class="metric-title"><svg><use href="#i-sun"/></svg>紫外線指數</div><div class="metric-value" id="uv">—</div><div class="metric-caption"><span id="uvTime">正在取得官方讀數</span></div></div>
+   </div></section>
    <div class="hero-dock">
-    <div class="dock-head"><div class="dock-label"><span class="line"></span>澳門實時天氣</div><div class="dock-actions">
-      <button type="button" class="frost-action" id="motionBtn" aria-pressed="false" aria-label="暫停或播放天氣動畫"><svg><use id="motionIcon" href="#i-pause"/></svg><span class="button-copy" id="motionText">暫停動畫</span></button>
+    <div class="dock-head"><div class="dock-actions">
+      <button type="button" class="frost-action" id="motionBtn" aria-pressed="false" aria-label="暫停或播放天氣動畫"><svg><use id="motionIcon" href="#i-pause"/></svg><span class="sr-only" id="motionText">暫停動畫</span></button>
     </div></div>
-    <div class="bottom-strip"><div class="status" role="status" id="status" aria-live="polite"><svg><use id="statusIcon" href="#i-check"/></svg><span id="statusText">正在讀取官方警告公告</span></div><div class="update-line">正在從氣象局取得實時資料</div></div>
+    <div class="update-line" role="status">正在取得實況</div>
    </div>
   </div>
  </section>
  <main class="main">
-  <section class="container reveal" id="hourly"><div class="section-header"><h2>接下來的天氣</h2><div class="caption">Open-Meteo 模型預報 · 澳門時間</div></div>
-   <div class="panel hourly"><div class="panel-header">每小時預報 <span class="hint">Open-Meteo · 非氣象局觀測</span></div>
+  <section class="container reveal" id="hourly"><div class="section-header"><h2>每小時</h2></div>
+   <div class="panel hourly">
     <div class="hour-scroller"><div class="hour-frame"><div class="hour-grid" id="hourLabels"></div><div class="hour-grid" id="hourIcons"></div><div class="hour-grid" id="hourTemps"></div>
      <svg viewBox="0 0 960 66" preserveAspectRatio="none" class="hour-chart" aria-hidden="true"><defs><linearGradient id="hourGrad" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#b1d6ed" stop-opacity=".44"/><stop offset="1" stop-color="#b1d6ed" stop-opacity="0"/></linearGradient></defs><path id="hourArea" class="area"/><path id="hourLine" class="line"/><g id="hourDots"></g></svg>
-     <div class="hour-bottom"><strong>降雨機率</strong><span>0–100%</span></div><div class="rain-grid" id="hourRains"></div></div></div>
+     <div class="hour-bottom"><strong>降雨機率</strong></div><div class="rain-grid" id="hourRains"></div></div></div>
    </div></section>
-  <section class="container reveal" id="week"><div class="section-header"><h2>未來七日</h2><div class="caption">一週天氣，一眼掌握</div></div><div class="weekly-grid"><div class="panel week-panel"><div class="week-scroller"><div class="week-days" id="weekDays"></div></div></div><div class="panel air-panel"><div><div class="eyebrow">PM2.5 · 實測濃度</div><div class="air-value" id="aqi">—</div><div class="air-level" id="aqiLevel">µg/m³</div></div><div><div class="air-foot" id="airStation">正在讀取官方測站資料</div></div></div></div></section>
+  <section class="container reveal" id="week"><div class="section-header"><h2>七日預報</h2></div><div class="weekly-grid"><div class="panel week-panel"><div class="week-scroller"><div class="week-days" id="weekDays"></div></div></div><div class="panel air-panel"><div><div class="eyebrow">PM2.5</div><div class="air-value" id="aqi">—</div><div class="air-level" id="aqiLevel">µg/m³</div></div><div><div class="air-foot" id="airStation">正在讀取官方測站資料</div></div></div></div></section>
   <section class="container reveal" id="environment">
-   <div class="section-header"><h2>城市環境</h2><div class="caption">氣象局官方監測</div></div>
-   <div class="panel environment-panel"><div class="panel-header">空氣污染物實測濃度 <span class="hint" id="airTime">正在取得資料</span></div><div class="table-scroller" id="airReadings"><p class="empty-state">正在讀取各站空氣資料…</p></div><p class="table-note">濃度單位：µg/m³；CO 為 mg/m³。以下為各站每小時讀數。</p></div>
+   <div class="section-header"><h2>城市環境</h2></div>
+   <div class="panel environment-panel"><div class="panel-header">空氣污染物實測濃度 <span class="hint" id="airTime">正在取得資料</span></div><div class="table-scroller" id="airReadings"><p class="empty-state">正在讀取各站空氣資料…</p></div><p class="table-note">µg/m³；CO：mg/m³</p></div>
    <div class="panel environment-panel"><div class="panel-header">空氣質量指數預報 <span class="hint" id="airForecastTime">官方預報</span></div><div id="airForecast"><p class="empty-state">正在讀取官方預報…</p></div></div>
    <div class="panel environment-panel"><div class="panel-header">各區氣象站 <span class="hint" id="stationTime">正在取得資料</span></div><div class="table-scroller" id="stationReadings"><p class="empty-state">正在讀取各站實況…</p></div></div>
   </section>
-  <section class="container reveal" id="detail"><div class="section-header"><h2>此刻，更多細節</h2><div class="caption">簡單易讀的氣象指標</div></div><div class="panel metrics">
-   <div class="metric"><div class="metric-title"><svg><use href="#i-droplet"/></svg>相對濕度</div><div class="metric-value" id="humidity">—</div><div class="metric-caption">空氣中的水氣</div></div>
-   <div class="metric"><div class="metric-title"><svg><use href="#i-wind"/></svg>風速</div><div class="metric-value" id="wind">—</div><div class="metric-caption" id="windDirection">未提供</div></div>
-   <div class="metric"><div class="metric-title"><svg><use href="#i-sun"/></svg>紫外線指數</div><div class="metric-value" id="uv">—</div><div class="metric-caption"><span id="uvTime">正在取得官方讀數</span></div></div>
-   <div class="metric"><div class="metric-title"><svg><use href="#i-rain"/></svg>降雨機率</div><div class="metric-value" id="rainChance">—</div><div class="metric-caption">Open-Meteo · 本小時模型預報</div></div>
-  </div><p class="notes">天空動畫隨官方實況及當地日出日落自動變化。實況、紫外線、空氣污染物濃度及預報來自 <a href="https://data.gov.mo/Datasets" target="_blank" rel="noopener noreferrer">政府數據開放平台・城市環境</a> 所列的 <a href="https://www.dsmg.gov.mo/zh-hant" target="_blank" rel="noopener noreferrer">氣象局</a> ；逐小時氣溫與降雨機率來自 <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>（<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>），為模型預報。未提供的指標顯示「—」；警告請以官方公告為準。</p></section>
-  <footer class="container footer"><div><strong>澳門天氣</strong><p>讓每一種天氣，都清晰可見。</p></div><div class="ref">ATMOSPHERIC WEATHER<br>LIVE DATA EDITION · 2026</div></footer>
+  <footer class="container footer"><strong>澳門天氣</strong><p class="sources"><a href="https://xml.smg.gov.mo/" target="_blank" rel="noopener noreferrer">SMG 官方資料</a> · <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo 模型預報</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a><br>警告以氣象局公告為準。</p></footer>
  </main>
 </div>
 <script type="module">
 import { inferScene, solarState } from './assets/weather-state.js';
 import { CloudRenderer } from './assets/cloud-renderer.js';
+import { warningView, mergeWarnings } from './assets/warning-view.js';
 (()=>{'use strict';
 const $=id=>document.getElementById(id),app=$('weatherApp'),stage=$('atmosphere'),canvas=$('skyCanvas'),ctx=canvas.getContext('2d',{alpha:true});
 const scenes=[
@@ -283,38 +304,53 @@ function applyLive(){
  $('conditionName').textContent=c.description||'實況暫缺';
  syncSolar();renderEnvironment(d);
  const forecasts=d.sevenDays?.days||[];
- if(forecasts.length){$('weekDays').innerHTML=forecasts.map((v,i)=>`<div class="day"><div class="day-title">${esc(v.date.slice(5).replace('-','/'))}</div>${svg(map.get(inferScene(v.description))?.icon||'cloud',35)}<div class="day-temp">${Number.isFinite(v.high)?esc(v.high)+'°':'—'} <span>${Number.isFinite(v.low)?esc(v.low)+'°':'—'}</span></div><div class="day-rain" title="${esc(v.description)}">濕度 ${esc(v.humidity||'—')}</div><div style="font-size:12px;line-height:1.6;margin-top:8px">${esc(v.description)}</div></div>`).join('');}
+ if(forecasts.length){$('weekDays').innerHTML=forecasts.map((v,i)=>`<div class="day"><div class="day-title">${esc(v.date.slice(5).replace('-','/'))}</div>${svg(map.get(inferScene(v.description))?.icon||'cloud',35)}<div class="day-temp">${Number.isFinite(v.high)?esc(v.high)+'°':'—'} <span>${Number.isFinite(v.low)?esc(v.low)+'°':'—'}</span></div><div class="day-rain" title="${esc(v.description)}">濕度 ${esc(v.humidity||'—')}</div><div style="font-size:12px;line-height:1.6;margin-top:8px">${esc(v.description.split('。')[0])}</div></div>`).join('');}
  else if(d.sevenDays?.text){$('weekDays').innerHTML='<div style="grid-column:span 7;text-align:left;padding:20px;line-height:1.9;font-size:14px;color:#3d576d">'+esc(d.sevenDays.text)+'</div>';}
  else {$('weekDays').innerHTML='<div style="grid-column:span 7;padding:20px;text-align:left">官方七日預報暫時未能讀取。</div>';}
- const warnings=d.warnings?.entries||[];
- const active=warnings.filter(w=>w.active===true), unknown=warnings.filter(w=>w.active===null);
- $('statusText').textContent=active.length?active.map(w=>w.type+'：'+w.description).join('；'):unknown.length?'部分警告狀態未能確認，請查閱官方公告':d.warnings?'官方公告：現時沒有上述天氣警告':'警告資料暫未能取得，請查閱官方公告';
- $('status').dataset.emphasis=String(active.length>0||unknown.length>0||!d.warnings);
- $('statusIcon').setAttribute('href',active.length||unknown.length||!d.warnings?'#i-alert':'#i-check');
  const published=c.validFor||c.publishedAt;
  const stale=!published || Number.isNaN(Date.parse(published)) || Date.now()-Date.parse(published)>90*60*1000;
  const displayTime=v=>new Intl.DateTimeFormat('zh-HK',{timeZone:'Asia/Macau',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(v));
- liveStatus.textContent='SMG 實況：'+(published?displayTime(published):'未取得')+' · 讀取：'+displayTime(d.fetchedAt)+(stale?' · 實況可能過期':'')+(d.unavailable?.length?' · 部分資料暫缺':'');
+ liveStatus.textContent='實況 '+(published?displayTime(published):'未取得')+(stale?' · 實況可能過期':'')+(d.unavailable?.length?' · 部分資料暫缺':'');
  document.querySelector('.meta-label').textContent=stale?'實況暫缺或可能過期':'SMG 官方實況';
 }
 async function refreshLive(){
  try{const res=await fetch('/api/weather',{signal:AbortSignal.timeout(12000)});if(!res.ok)throw Error('upstream unavailable');
  const data=await res.json();if(!['current','today','sevenDays','hourly','warnings','uv','air','airForecast','stations'].some(k=>data[k]))throw Error('empty');
  livePayload=data;liveFail=false;applyLive();
- }catch(e){liveFail=true;if(!livePayload){resetUnverified();renderEnvironment({});$('conditionName').textContent='資料暫未能取得';$('conditionDescription').textContent='官方資料連線暫時不可用，請稍後再試。';$('statusText').textContent='請以澳門地球物理氣象局官方公告為準';liveStatus.textContent='未能連接氣象局資料 · 網頁不會顯示模擬天氣數值';document.querySelector('.meta-label').textContent='數據連接中斷';}else{applyLive();liveStatus.textContent+=' · 最近一次更新失敗，顯示上次資料';}}
+ }catch(e){liveFail=true;if(!livePayload){resetUnverified();renderEnvironment({});$('conditionName').textContent='資料暫未能取得';$('conditionDescription').textContent='官方資料連線暫時不可用，請稍後再試。';liveStatus.textContent='實況更新未成功，稍後重試';document.querySelector('.meta-label').textContent='數據連接中斷';}else{applyLive();liveStatus.textContent+=' · 更新失敗，顯示上次資料';}}
 }
 
+let warningPayload=null,warningBusy=false;
+function renderWarnings(){
+ const view=warningView(warningPayload);
+ $('warningRegion').dataset.mode=view.mode;$('warningSummary').textContent=view.summary;
+ if($('warningCards').innerHTML!==view.cards)$('warningCards').innerHTML=view.cards;
+ $('warningNotice').hidden=!view.uncertain;
+ $('warningNotice').textContent=view.uncertain?'部分警告狀態未能確認，請查看氣象局公告。':'';
+ app.classList.toggle('has-warning',view.mode==='active'||view.mode==='uncertain');
+}
+async function refreshWarnings(){
+ if(warningBusy)return;warningBusy=true;
+ try{
+  const res=await fetch('/api/warnings',{cache:'no-store',signal:AbortSignal.timeout(9000)});
+  if(!res.ok)throw Error('Warnings unavailable');const next=await res.json();
+  if(!Array.isArray(next.entries)||!next.entries.length)throw Error('Missing warning status');
+  warningPayload=mergeWarnings(warningPayload,next);
+ }catch{
+  warningPayload=warningPayload?{...warningPayload,entries:warningPayload.entries.map(e=>e.active?{...e,unverified:true}:{...e,active:null})}:null;
+ }finally{warningBusy=false;renderWarnings();}
+}
 function pick(id){
  if(!map.has(id)||id===current&&app.dataset.condition===id)return;
  current=id;app.dataset.condition=id;setTheme(map.get(id));initParticles();boltEnd=0;bolts=[];stormNext=performance.now()+1600;start();
 }
 function toggleMotion(){motionPaused=!motionPaused;app.classList.toggle('motion-paused',motionPaused);$('motionBtn').setAttribute('aria-pressed',String(motionPaused));$('motionText').textContent=motionPaused?'播放動畫':'暫停動畫';$('motionIcon').setAttribute('href',motionPaused?'#i-play':'#i-pause');if(motionPaused){stop();drawStill()}else start()}
 function setup(){
- sizeCanvas();syncSolar();resetUnverified();refreshLive();setInterval(refreshLive,5*60*1000);setInterval(syncSolar,60*1000);
- $('motionBtn').addEventListener('click',toggleMotion);
+ sizeCanvas();syncSolar();resetUnverified();refreshLive();refreshWarnings();setInterval(refreshLive,5*60*1000);setInterval(syncSolar,60*1000);setInterval(refreshWarnings,60*1000);
+ $('motionBtn').addEventListener('click',toggleMotion);$('warningCards').addEventListener('error',e=>{if(e.target.tagName==='IMG')e.target.classList.add('image-failed')},true);
  if(reduce.matches){app.classList.add('motion-paused');drawStill()}else start();
  if('IntersectionObserver'in window){const sceneObserver=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)start();else stop()},{threshold:0});sceneObserver.observe(stage);const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObserver.unobserve(e.target)}}),{threshold:.1});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el))}else document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
- document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else{syncSolar();start();}});window.addEventListener('resize',()=>{sizeCanvas();start()},{passive:true});if(reduce.addEventListener)reduce.addEventListener('change',e=>{if(e.matches){stop();drawStill();app.classList.add('motion-paused')}else{app.classList.toggle('motion-paused',motionPaused);start()}});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else{syncSolar();refreshWarnings();start();}});window.addEventListener('resize',()=>{sizeCanvas();start()},{passive:true});if(reduce.addEventListener)reduce.addEventListener('change',e=>{if(e.matches){stop();drawStill();app.classList.add('motion-paused')}else{app.classList.toggle('motion-paused',motionPaused);start()}});
  let scrollBusy=false;window.addEventListener('scroll',()=>{if(scrollBusy||reduce.matches)return;scrollBusy=true;requestAnimationFrame(()=>{scrollBusy=false;const p=Math.min(1,window.scrollY/500);const celestial=$('celestial');celestial.style.transform=`translate3d(0,${(-55*p).toFixed(1)}px,0) scale(${(1-.18*p).toFixed(3)})`;})},{passive:true});}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
 })();
