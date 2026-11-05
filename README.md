@@ -2,6 +2,11 @@
 
 靜態網頁搭配 Vercel Node.js Function `/api/weather`。已取代原本 Cloudflare Pages Function；無需資料庫。
 
+- 正式網站：https://macau-weather.vercel.app
+- 正式 API：https://macau-weather.vercel.app/api/weather
+- GitHub：https://github.com/HiNesslio/macau-weather
+- Vercel 已連接 GitHub 的 `main` 分支，推送更新會自動部署。
+
 ## 部署到 Vercel
 
 將本資料夾上傳到 Git 儲存庫後，在 Vercel 匯入：
@@ -15,7 +20,7 @@
 
 `vercel.json` 已包含建置、輸出、函數執行時間及安全標頭設定。只將 `index.html` 複製至公開靜態目錄，API 由根目錄 `api/weather.js` 執行。
 
-部署完成後，開啟 `/api/weather`，應收到 JSON；完整成功時 `unavailable` 為 `[]`。再確認首頁實況時間、七日預報和逐小時圖表。這份專案已完成本機連線及畫面驗證，尚未部署至 Vercel。
+部署完成後，開啟 `/api/weather`，應收到 JSON；完整成功時 `unavailable` 為 `[]`。再確認首頁實況時間、七日預報和逐小時圖表。此專案已於 2026-11-05 部署至 Vercel，公開首頁及正式 API 均已驗證；五個資料來源均成功回應。
 
 ## 實際資料來源
 
