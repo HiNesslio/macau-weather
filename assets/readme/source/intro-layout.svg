@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+ <title id="title">澳門天氣：實況、官方警告與預報</title>
+ <desc id="desc">使用實際網站截圖，依序標出即時實況、官方警告和首屏氣象詳情。截圖數值為製作時的實況快照。</desc>
+ <defs>
+  <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#0b192a"/><stop offset="1" stop-color="#233c53"/></linearGradient>
+  <clipPath id="screen"><rect x="40" y="148" width="1120" height="532" rx="18"/></clipPath>
+ </defs>
+ <rect width="1200" height="720" rx="24" fill="url(#sky)"/>
+ <g font-family="-apple-system, BlinkMacSystemFont, 'PingFang TC', 'Noto Sans CJK TC', sans-serif">
+  <text x="54" y="72" font-size="52" font-weight="650" fill="#f4f9ff">澳門天氣</text>
+  <text x="54" y="115" font-size="25" fill="#bcd2e4">即時實況、官方警告與逐小時預報。</text>
+  <text x="1145" y="66" text-anchor="end" font-size="22" fill="#9fc9e4">macau-weather.vercel.app ↗</text>
+  <image x="40" y="70" width="1120" height="630" xlink:href="weather-screen.jpg" clip-path="url(#screen)"/>
+  <g id="focus-now">
+   <rect x="94" y="204" width="460" height="305" rx="14" fill="none" stroke="#9fc9e4" stroke-width="3"/>
+   <rect x="825" y="210" width="284" height="58" rx="14" fill="#0b192a" stroke="#9fc9e4" stroke-width="1"/>
+   <text x="967" y="248" text-anchor="middle" font-size="25" font-weight="600" fill="#f4f9ff">01　官方實況</text>
+  </g>
+  <g id="focus-warning">
+   <rect x="94" y="148" width="1010" height="36" rx="8" fill="none" stroke="#f1d4a3" stroke-width="3"/>
+   <rect x="825" y="210" width="284" height="58" rx="14" fill="#0b192a" stroke="#f1d4a3" stroke-width="1"/>
+   <text x="967" y="248" text-anchor="middle" font-size="25" font-weight="600" fill="#f4f9ff">02　六類官方警告</text>
+  </g>
+  <g id="focus-details">
+   <rect x="94" y="510" width="1010" height="126" rx="18" fill="none" stroke="#9fc9e4" stroke-width="3"/>
+   <rect x="825" y="210" width="284" height="58" rx="14" fill="#0b192a" stroke="#9fc9e4" stroke-width="1"/>
+   <text x="967" y="248" text-anchor="middle" font-size="25" font-weight="600" fill="#f4f9ff">03　即時氣象詳情</text>
+  </g>
+ </g>
+</svg>

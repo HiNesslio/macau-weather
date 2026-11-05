@@ -135,7 +135,7 @@
     <div class="location"><svg width="17" height="17"><use href="#i-pin"/></svg><span>澳門</span><span class="small-dot"></span><span id="dateLabel">11 月 5 日</span></div>
     <div class="temp" id="temperatureLine"><span id="currentTemp">—</span><span class="unit">°</span></div>
     <div class="condition-name" id="conditionName">正在取得實況</div><div class="condition-desc" id="conditionDescription">正在讀取澳門氣象局資料。</div>
-    <div class="highlow"><span>今日最高 <strong id="hi">—</strong>　最低 <strong id="lo">—</strong></span><span>體感評級 <strong id="feels">—</strong></span><span id="nightMessage">日間場景</span></div>
+    <div class="highlow"><span>預測最高 <strong id="hi">—</strong>　最低 <strong id="lo">—</strong></span><span>體感評級 <strong id="feels">—</strong></span><span id="nightMessage">日間場景</span></div>
    </div>
    <section id="detail" class="live-details" aria-label="即時天氣詳情"><div class="metrics">
    <div class="metric"><div class="metric-title"><svg><use href="#i-rain"/></svg>降雨機率</div><div class="metric-value" id="rainChance">—</div><div class="metric-caption">本小時預報</div></div>
@@ -294,8 +294,11 @@ function applyLive(){
  $('humidity').innerHTML=Number.isFinite(c.humidity)?esc(c.humidity)+'<small>%</small>':'—';
  $('wind').innerHTML=Number.isFinite(c.windSpeed)?esc(c.windSpeed)+'<small>km/h</small>':'—';
  $('windDirection').textContent=c.windDirection||'未提供';
- $('hi').textContent=Number.isFinite(c.high)?c.high+'°':'—';
- $('lo').textContent=Number.isFinite(c.low)?c.low+'°':'—';
+ const daily=d.dailyForecast||{};
+ $('hi').textContent=Number.isFinite(daily.high)?daily.high+'°':'—';
+ $('lo').textContent=Number.isFinite(daily.low)?daily.low+'°':'—';
+ $('hi').setAttribute('title','當日預測最高溫 · '+(daily.date||'暫未提供'));
+ $('lo').setAttribute('title','當日預測最低溫 · '+(daily.date||'暫未提供'));
  $('feels').textContent=c.feelsLikeDescription||'—';
  $('conditionDescription').textContent=f.description||c.description||'官方天氣描述暫未能取得';
  const guess=inferScene(c.description);

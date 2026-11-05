@@ -1,0 +1,8 @@
+{
+ "width":1200,"fps":30,"duration":8.0,"colors":256,"dither":"none","clip_to_base_alpha":true,"max_size_mb":2.0,
+ "layers":[
+  {"id":"focus-now","enter":{"start":0.25,"end":0.95,"from":[0,6]},"exit":{"start":2.2,"end":2.6,"to":[0,0]}},
+  {"id":"focus-warning","enter":{"start":2.6,"end":3.3,"from":[0,6]},"exit":{"start":4.6,"end":5.0,"to":[0,0]}},
+  {"id":"focus-details","enter":{"start":5.0,"end":5.7,"from":[0,6]},"exit":{"start":7.1,"end":7.6,"to":[0,0]}}
+ ]
+}

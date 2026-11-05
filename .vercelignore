@@ -3,3 +3,5 @@ test/
 README.md
 *.zip
 docs/
+assets/readme/
+scripts/render-readme.py

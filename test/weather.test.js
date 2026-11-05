@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { Script } from 'node:vm';
-import { loadWeather, FEEDS, parseCurrent, parseSevenDays, parseToday, parseWarnings, parseHourly, parseUV, parseAir, parseAirForecast, parseStations } from '../lib/weather.js';
+import { loadWeather, FEEDS, parseCurrent, parseSevenDays, parseToday, parseWarnings, parseHourly, parseUV, parseAir, parseAirForecast, parseStations, attachDailyForecast } from '../lib/weather.js';
 import handler from '../api/weather.js';
 const fixture = name => readFile(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 const now = new Date('2026-11-05T21:05:00+08:00');
@@ -19,7 +19,7 @@ test('choose forecast valid for Macau calendar date, not first available date', 
  assert.equal(parseToday(xml, new Date('2026-11-05T16:05:00Z')).validFor, '2026-11-06');
  assert.throws(() => parseToday(xml, new Date('2027-01-01')));
 });
-test('parse seven real dates, humidity and forecast text from RSS CDATA', async () => {
+test('parse seven real dates and typed temperature ranges from official XML', async () => {
  const data = parseSevenDays(await fixture('sevenDays.xml'));
  assert.equal(data.days.length, 7); assert.equal(data.days[0].date, '2026-11-06');
  assert.equal(data.days[0].low, 24); assert.equal(data.days[0].high, 30); assert.equal(data.days[0].humidity, '65–95%');
@@ -93,4 +93,29 @@ test('full station data preserves decimal precision and missing pressure', async
  const data = parseStations(await fixture('stations.xml'));const tg=data.stations.find(s=>s.code==='TG');
  assert.ok(data.stations.length>=10);assert.equal(tg.temperature,25.6);assert.equal(tg.pressure,1018);assert.equal(tg.dewPoint,23.7);
  assert.equal(data.stations.find(s=>s.code==='DP').pressure,null);
+});
+
+test('today forecast fills high/low from the matching official calendar date',async()=>{
+ const current=parseCurrent(await fixture('current-no-extrema.xml'));
+ assert.equal(current.high,null);assert.equal(current.low,null);
+ const d=attachDailyForecast({current,sevenDays:parseSevenDays(await fixture('sevenDays.xml'))},new Date('2026-11-06T02:15:00+08:00'));
+ assert.equal(d.dailyForecast.high,30);assert.equal(d.dailyForecast.low,24);assert.equal(d.current.high,30);assert.equal(d.current.low,24);
+ assert.equal(d.current.observedHigh,null);assert.equal(d.current.extrema.kind,'forecast_daily');assert.equal(d.dailyForecast.sourceUrl,FEEDS.sevenDays);
+});
+test('forecast date selection follows Macau midnight and never reuses a nonmatching day',async()=>{
+ const sevenDays=parseSevenDays(await fixture('sevenDays.xml'));
+ for(const [date,high] of [['2026-11-06T15:59:00Z',30],['2026-11-06T16:01:00Z',28]]){
+   const d=attachDailyForecast({current:{high:25.2,low:24.7},sevenDays},new Date(date));assert.equal(d.current.high,high);
+ }
+ const absent=attachDailyForecast({current:{high:25.2,low:24.7},sevenDays},new Date('2026-12-01T02:00:00+08:00'));
+ assert.equal(absent.dailyForecast,null);assert.equal(absent.current.high,null);assert.equal(absent.current.low,null);assert.equal(absent.current.observedHigh,25.2);
+});
+test('forecast parsing uses Type rather than XML order, and forecast remains available without observations',async()=>{
+ const xml=await fixture('sevenDays.xml');
+ const reversed=xml.replace(/(<Temperature>[\s\S]*?<\/Temperature>)(\s*)(<Temperature>[\s\S]*?<\/Temperature>)/g,'$3$2$1');
+ assert.equal(parseSevenDays(reversed).days[0].high,30);assert.equal(parseSevenDays(reversed).days[0].low,24);
+ const reordered=xml.replaceAll('<Type>1</Type>','<Type>swap</Type>').replaceAll('<Type>2</Type>','<Type>1</Type>').replaceAll('<Type>swap</Type>','<Type>2</Type>');
+ assert.throws(()=>parseSevenDays(reordered),/Invalid forecast range/);
+ const d=attachDailyForecast({current:null,sevenDays:parseSevenDays(xml)},new Date('2026-11-06T02:15:00+08:00'));
+ assert.equal(d.current,null);assert.equal(d.dailyForecast.high,30);assert.equal(d.dailyForecast.low,24);
 });
