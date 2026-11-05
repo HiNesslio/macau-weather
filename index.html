@@ -330,7 +330,7 @@ function renderWarnings(){
  app.classList.toggle('has-warning',view.mode==='active'||view.mode==='uncertain');
 }
 async function refreshWarnings(){
- if(warningBusy)return;warningBusy=true;
+ if(warningBusy)return;warningBusy=true;if(warningPayload)renderWarnings();
  try{
   const res=await fetch('/api/warnings',{cache:'no-store',signal:AbortSignal.timeout(9000)});
   if(!res.ok)throw Error('Warnings unavailable');const next=await res.json();

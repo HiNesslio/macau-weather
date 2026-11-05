@@ -41,7 +41,7 @@ test('cancel clears a previous active warning; failed confirmation preserves it 
  const view=warningView(pending);assert.equal(view.mode,'active');assert.equal(view.uncertain,true);assert.match(view.cards,/狀態待確認/);
  const cancelled=mergeWarnings(pending,{checkedAt:now.toISOString(),entries:[{key:'typhoon',active:false,status:2}]});
  assert.equal(warningView(cancelled).cards,'');assert.equal(warningView(cancelled).mode,'clear');
- assert.equal(warningView({...previous,checkedAt:new Date(Date.now()-180000).toISOString()}).uncertain,true);
+ const stale=warningView({...previous,checkedAt:new Date(Date.now()-180000).toISOString()});assert.equal(stale.uncertain,true);assert.match(stale.cards,/狀態待確認/);assert.equal(stale.summary,'警告狀態待確認');
 });
 test('warning API never caches a complete outage or serves stale warning cache',async()=>{
  const original=globalThis.fetch;globalThis.fetch=async()=>{throw Error('offline');};
