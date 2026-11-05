@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   const payload = await loadWeather();
-  const available = ['current', 'today', 'sevenDays', 'warnings', 'hourly'].some(key => payload[key]);
+  const available = ['current', 'today', 'sevenDays', 'warnings', 'hourly', 'uv', 'air', 'airForecast', 'stations'].some(key => payload[key]);
   // Do not cache partial outages; retry missing sources on the next request.
   res.setHeader('Cache-Control', available && !payload.unavailable.length
     ? 'public, max-age=0, s-maxage=300, stale-while-revalidate=300' : 'no-store');

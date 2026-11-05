@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ForecastIQA xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ForecastIQA.xsd">
+	<System>
+		<SysPubdate>2026-11-05 17:30:12</SysPubdate>
+		<SysAuthor>SMG-DINF</SysAuthor>
+		<SysLanguage>0</SysLanguage>
+	</System>
+	<Custom>
+		<ReportDescription>預測今晚至明日空氣質量水平</ReportDescription>
+		<AQIForecastReport>
+			<Station code="BDR">
+				<Stationname>路邊</Stationname>
+				<AQIForecast>
+					<ValidFor>2026-11-06</ValidFor>
+					<Type>7</Type>
+					<Value>60-80</Value>
+					<AQIForecastDescription>普通</AQIForecastDescription>
+					<Icon>
+						<IconName>c_moderate.png</IconName>
+						<IconURL>https://www.smg.gov.mo/icons/iqa/images/c_moderate.png</IconURL>
+					</Icon>
+				</AQIForecast>
+			</Station>
+		</AQIForecastReport>
+		<AQIForecastReport>
+			<Station code="ADH">
+				<Stationname>高密度住宅區</Stationname>
+				<AQIForecast>
+					<ValidFor>2026-11-06</ValidFor>
+					<Type>7</Type>
+					<Value>50-70</Value>
+					<AQIForecastDescription>良好 - 普通</AQIForecastDescription>
+					<Icon>
+						<IconName>c_moderate.png</IconName>
+						<IconURL>https://www.smg.gov.mo/icons/iqa/images/c_moderate.png</IconURL>
+					</Icon>
+				</AQIForecast>
+			</Station>
+		</AQIForecastReport>
+		<AQIForecastReport>
+			<Station code="AMBIENTAL">
+				<Stationname>一般性</Stationname>
+				<AQIForecast>
+					<ValidFor>2026-11-06</ValidFor>
+					<Type>7</Type>
+					<Value>65-85</Value>
+					<AQIForecastDescription>普通</AQIForecastDescription>
+					<Icon>
+						<IconName>c_moderate.png</IconName>
+						<IconURL>https://www.smg.gov.mo/icons/iqa/images/c_moderate.png</IconURL>
+					</Icon>
+				</AQIForecast>
+			</Station>
+		</AQIForecastReport>
+		<Complementary>
+			<Level>普通</Level>
+			<Icon>
+				<IconName>c_moderate.png</IconName>
+				<IconURL>https://www.smg.gov.mo/icons/iqa/images/c_moderate.png</IconURL>
+			</Icon>
+			<SensitivePopulationGroups>應減少戶外劇烈活動。</SensitivePopulationGroups>
+			<GeneralPublic>可如常活動。</GeneralPublic>
+		</Complementary>
+	</Custom>
+</ForecastIQA>

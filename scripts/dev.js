@@ -8,6 +8,12 @@ http.createServer(async (req, res) => {
       res.json = data => { res.setHeader('Content-Type', 'application/json; charset=utf-8'); res.end(JSON.stringify(data)); };
       return await handler(req, res);
     }
+    const path = new URL(req.url, 'http://localhost').pathname;
+    if (/^\/assets\/[\w/.-]+$/.test(path) && !path.includes('..')) {
+      const file = new URL('..' + path, import.meta.url);
+      res.setHeader('Content-Type', path.endsWith('.js') ? 'text/javascript; charset=utf-8' : path.endsWith('.webp') ? 'image/webp' : 'application/octet-stream');
+      res.end(await readFile(file)); return;
+    }
     if (req.url !== '/') { res.writeHead(404).end(); return; }
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.end(await readFile(new URL('../index.html', import.meta.url)));

@@ -1,0 +1,81 @@
+{
+  "datetime": "2026-11-05 20:45",
+  "pohopolu": {
+    "Chinese": "荷蘭園（路邊）",
+    "Portuguese": "Conselheiro Ferreira de Almeida (Berma da Estrada)",
+    "English": "Conselheiro Ferreira de Almeida (Roadside)",
+    "DDTT": "2026110520",
+    "CODE": "PO",
+    "HE_PM2_5": "18.000",
+    "HE_SO2": "3.321",
+    "HE_PM10": "26.000",
+    "HE_NO2": "71.502",
+    "HE_CO": "0.868",
+    "HE_O3": "32.398"
+  },
+  "khhopolu": {
+    "Chinese": "九澳（路邊）",
+    "Portuguese": "Ka-Hó (Berma da Estrada)",
+    "English": "Ka-Hó (Roadside)",
+    "DDTT": "2026110520",
+    "CODE": "KH",
+    "HE_PM2_5": "11.000",
+    "HE_SO2": "4.153",
+    "HE_PM10": "24.000",
+    "HE_NO2": "10.768",
+    "HE_CO": "0.603",
+    "HE_O3": "76.341"
+  },
+  "enhopolu": {
+    "Chinese": "台山（高密度住宅區）",
+    "Portuguese": "Bairro de Tamagnini Barbosa (Alta Densidade Habitacional)",
+    "English": "Bairro de Tamagnini Barbosa (High Density Residental Area)",
+    "DDTT": "2026110520",
+    "CODE": "EN",
+    "HE_PM2_5": "3.000",
+    "HE_SO2": "2.563",
+    "HE_PM10": "30.000",
+    "HE_NO2": "42.918",
+    "HE_CO": "0.541",
+    "HE_O3": "57.514"
+  },
+  "tchopolu": {
+    "Chinese": "氹仔中心區（高密度住宅區）",
+    "Portuguese": "Baixa da Taipa (Alta Densidade Habitacional)",
+    "English": "Baixa da Taipa (High Density Residental Area)",
+    "DDTT": "2026110520",
+    "CODE": "TC",
+    "HE_PM2_5": "12.000",
+    "HE_SO2": "1.668",
+    "HE_PM10": "27.000",
+    "HE_NO2": "31.493",
+    "HE_CO": "0.700",
+    "HE_O3": "64.255"
+  },
+  "tghopolu": {
+    "Chinese": "大潭山（一般性）",
+    "Portuguese": "Taipa Grande (Ambiental)",
+    "English": "Taipa Grande (Ambient)",
+    "DDTT": "2026110520",
+    "CODE": "TG",
+    "HE_PM2_5": "11.000",
+    "HE_SO2": "0.648",
+    "HE_PM10": "20.000",
+    "HE_NO2": "17.591",
+    "HE_CO": "0.899",
+    "HE_O3": "82.219"
+  },
+  "cdhopolu": {
+    "Chinese": "石排灣（一般性）",
+    "Portuguese": "Seac Pai Van (Ambiental)",
+    "English": "Seac Pai Van (Ambient)",
+    "DDTT": "2026110520",
+    "CODE": "CD",
+    "HE_PM2_5": "9.000",
+    "HE_SO2": "1.950",
+    "HE_PM10": "23.000",
+    "HE_NO2": "18.461",
+    "HE_CO": "0.694",
+    "HE_O3": "68.894"
+  }
+}

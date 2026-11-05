@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ActualUV-Index>
+  <System>
+    <SysPubdate>2026-11-05 21:30</SysPubdate>
+    <SysLanguage>0</SysLanguage>
+  </System>
+  <Custom>
+    <ActualUVBReport>
+      <RecordTime>2026/11/05 21:15</RecordTime>
+      <UV-Index>
+        <Type>12</Type>
+        <Value>0</Value>
+      </UV-Index>
+      <Icon>
+        <IconName>UVIndex00.jpg</IconName>
+        <IconURL>https://xml.smg.gov.mo/icons/UVIndex/UVIndex00.jpg</IconURL>
+      </Icon>
+    </ActualUVBReport>
+  </Custom>
+</ActualUV-Index>

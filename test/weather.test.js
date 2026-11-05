@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { Script } from 'node:vm';
-import { loadWeather, FEEDS, parseCurrent, parseSevenDays, parseToday, parseWarnings, parseHourly } from '../lib/weather.js';
+import { loadWeather, FEEDS, parseCurrent, parseSevenDays, parseToday, parseWarnings, parseHourly, parseUV, parseAir, parseAirForecast, parseStations } from '../lib/weather.js';
 import handler from '../api/weather.js';
 const fixture = name => readFile(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 const now = new Date('2026-11-05T21:05:00+08:00');
@@ -45,7 +45,7 @@ test('hourly forecast uses actual API arrays, nulls and UTC instants', async () 
  assert.throws(() => parseHourly(data, now));
 });
 test('partial upstream failure preserves other sources and identifies the missing feed', async () => {
- const data = Object.fromEntries(await Promise.all(Object.keys(FEEDS).map(async key => [FEEDS[key], await fixture(key === 'hourly' ? 'hourly.json' : `${key}.xml`)])));
+ const data = Object.fromEntries(await Promise.all(Object.keys(FEEDS).map(async key => [FEEDS[key], await fixture(['hourly','air'].includes(key) ? `${key}.json` : `${key}.xml`)])));
  const result = await loadWeather(async url => {
    if (url === FEEDS.current) return new Response('unavailable', { status: 503 });
    return new Response(data[url]);
@@ -53,7 +53,7 @@ test('partial upstream failure preserves other sources and identifies the missin
  assert.deepEqual(result.unavailable, ['current']); assert.equal(result.current, null);
  assert.equal(result.sevenDays.days.length, 7); assert.equal(result.hourly.hours.length, 12);
  const allDown = await loadWeather(async () => { throw Error('offline'); }, now);
- assert.equal(allDown.unavailable.length, 5);
+ assert.equal(allDown.unavailable.length, 9);
 });
 test('API returns 503 without caching when every provider is unavailable and rejects writes', async () => {
  const original = globalThis.fetch;
@@ -67,7 +67,30 @@ test('API returns 503 without caching when every provider is unavailable and rej
 });
 test('frontend JavaScript parses and does not render demo weather values', async () => {
  const html=await readFile(new URL('../index.html', import.meta.url),'utf8');
- new Script(html.match(/<script>([\s\S]*?)<\/script>/)[1]);
+ new Script(html.match(/<script type="module">([\s\S]*?)<\/script>/)[1].replace(/^import .*;$/gm, ""));
  assert.doesNotMatch(html,/textContent=s\.temp|innerHTML=s\.pop/);
  assert.match(html,/id="currentTemp">—/);
+ assert.doesNotMatch(html,/sceneRail|autoBtn|dayNightBtn|__manualWeatherScene|URLSearchParams/);
+});
+
+test('official UV zero is a valid night observation, not missing data', async () => {
+ const data = parseUV(await fixture('uv.xml'));
+ assert.equal(data.index, 0); assert.equal(data.level, '低'); assert.equal(data.observedAt, '2026-11-05T21:15+08:00');
+ assert.throws(() => parseUV('<ActualUV-Index><Custom/></ActualUV-Index>'));
+});
+test('six air stations preserve concentrations, units, missing values and individual observation times', async () => {
+ const raw = JSON.parse(await fixture('air.json')); const data = parseAir(raw);
+ assert.equal(data.stations.length, 6); const tg = data.stations.find(s => s.code === 'TG');
+ assert.equal(tg.pm25, 11); assert.equal(tg.co, .899); assert.equal(tg.observedAt,'2026-11-05T20:00+08:00');
+ assert.equal(data.units.co,'mg/m³');assert.equal(data.units.pm25,'µg/m³');
+ raw.tghopolu.HE_PM2_5='--';assert.equal(parseAir(raw).stations.find(s=>s.code==='TG').pm25,null);
+});
+test('AQI ranges are forecasts with valid dates, not observed AQI', async () => {
+ const data = parseAirForecast(await fixture('airForecast.xml'));
+ assert.equal(data.areas.length,3);assert.equal(data.areas[0].range,'60-80');assert.equal(data.areas[0].validFor,'2026-11-06');
+});
+test('full station data preserves decimal precision and missing pressure', async () => {
+ const data = parseStations(await fixture('stations.xml'));const tg=data.stations.find(s=>s.code==='TG');
+ assert.ok(data.stations.length>=10);assert.equal(tg.temperature,25.6);assert.equal(tg.pressure,1018);assert.equal(tg.dewPoint,23.7);
+ assert.equal(data.stations.find(s=>s.code==='DP').pressure,null);
 });
