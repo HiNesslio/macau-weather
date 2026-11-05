@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>澳門天氣警告</title>
+    <link>http://www.smg.gov.mo</link>
+    <description>澳門天氣警告</description>
+    <pubDate>Sun, 04 Oct 2026 23:30:00 +0800</pubDate>
+    <copyright>SMG-2009. All rights reserved.</copyright>
+    <Image>
+      <url>http://rss.smg.gov.mo/images/smglogo.gif</url>
+      <link>http://www.smg.gov.mo</link>
+      <title>澳門天氣警告</title>
+    </Image>
+    <item>
+      <title>澳門於2026年10月04日23時30分發出之天氣警告</title>
+      <link>http://www.smg.gov.mo</link>
+      <guid isPermaLink="false">http://rss.smg.gov.mo/</guid>
+      <description>
+<![CDATA[<table border="1">        <tr><th bgcolor="#0099ff"> 警告類型 </th><th bgcolor="#0099ff"> 最近更新時間 </th><th bgcolor="#0099ff"> 內容 </th></tr>        <tr><td><a href="https://www.smg.gov.mo/zh/subpage/28/typhoon-main">熱帶氣旋</a></td><td>2026-09-03 23:00</td><td>現時並沒有熱帶氣旋信號。</td></tr>        <tr><td><a href="https://www.smg.gov.mo/zh/subpage/33/rainstorm-main">暴雨</a></td><td>2026-10-04 23:25</td><td>現時沒有暴雨警告信號。</td></tr>        <tr><td><a href="https://www.smg.gov.mo/zh/subpage/35/monsoon-main">強烈季候風</a></td><td>2026-09-13 14:20</td><td>現時沒有季候風黑球警告。</td></tr>        <tr><td><a href="https://www.smg.gov.mo/zh/subpage/34/thunderstorm-main">雷暴</a></td><td>2026-10-04 23:30</td><td>現時沒有雷暴警告信號。</td></tr>        <tr><td><a href="https://www.smg.gov.mo/zh/subpage/36/stormsurge-main">風暴潮</a></td><td>2025-10-05 13:00</td><td>現時沒有風暴潮警告。</td></tr>        <tr><td><a href="https://www.smg.gov.mo/zh/subpage/210/tsunami-main">海嘯</a></td><td>2023-01-17 12:27</td><td>現時沒有海嘯警告信號。</td></tr></table>]]> 
+</description>
+    </item>
+  </channel>
+</rss>

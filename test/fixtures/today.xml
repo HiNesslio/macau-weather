@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<ActualForecast xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="weatherforecast.xsd">
+ <System>
+  <SysAuthor>SMG-InfoGrp</SysAuthor>
+  <SysPubdate>2026-11-05 21:00</SysPubdate>
+  <SysLanguage>0</SysLanguage>
+ </System>
+ <Custom>
+  <TodaySituation>一股偏東氣流正影響本澳天氣。</TodaySituation>
+  <WeatherForecast>
+   <AstronomicalTide>NIL</AstronomicalTide>
+   <ValidFor>2026-11-05</ValidFor>
+   <WeatherDescription>大致多雲。
+吹2至3級東南風。</WeatherDescription>
+  </WeatherForecast>
+  <WeatherForecast>
+   <AstronomicalTide>NIL</AstronomicalTide>
+   <ValidFor>2026-11-06</ValidFor>
+   <WeatherDescription>多雲，部份時間有陽光。
+早晚有微雨。
+吹微風，後轉3至4級東至東北風。
+氣溫約為攝氏24至30度。
+相對濕度介乎百分之65至95之間。
+預測最高紫外線指數約為 6，級別屬於高。</WeatherDescription>
+  </WeatherForecast>
+ </Custom>
+</ActualForecast>
