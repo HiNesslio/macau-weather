@@ -99,6 +99,48 @@
 .warning-summary{font-size:11px;padding:3px 0 7px}.warning-cards{grid-template-columns:1fr;gap:10px}.warning-card{padding:17px 15px;gap:12px;border-radius:17px}.warning-icon{flex-basis:52px;min-height:52px}.warning-icon img{width:52px;height:52px}.warning-title-line h2{font-size:19px}.warning-copy p{font-size:13px}.warning-title-line{gap:7px}.warning-meta{font-size:11px;margin-top:10px}.has-warning .hero-main{padding-top:25px;min-height:290px}.section-header h2{font-size:22px}.hourly{padding-top:1px}.frost-action{width:34px;padding:0}.update-line{font-size:10px;max-width:275px}.footer{gap:8px}.sources{font-size:11px}}
 .nav{gap:20px}.nav-actions{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}.nav-actions .meta-label{margin-left:0}.github-link{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid color-mix(in srgb,currentColor 20%,transparent);border-radius:999px;font-size:12px;white-space:nowrap;color:var(--hero-ink);transition:background .2s}.github-link:hover{background:var(--glass)}.github-link svg{width:16px;height:16px;flex-shrink:0}@media(max-width:1100px){.navlinks{gap:12px}.nav{gap:14px}.wordmark small{display:none}}@media(max-width:720px){.nav{gap:12px}.nav-actions{gap:8px}.github-link{font-size:11px;padding:6px 8px;gap:5px}.open-source-copy{display:none}.github-link svg{width:14px;height:14px}}
 .highlow{margin-top:20px;padding:4px 0 14px;column-gap:28px;row-gap:10px;align-items:center;font-size:14px;line-height:1.8}.highlow strong{font-size:17px}.highlow #nightMessage{font-size:16px;color:var(--hero-ink)}.live-details{margin-top:8px}.live-details .metric{padding:22px 26px}.live-details .metric-caption{margin-top:7px}@media(max-width:720px){.highlow{padding:5px 0 15px;column-gap:20px;row-gap:9px;font-size:13px}.highlow strong{font-size:16px}.highlow #nightMessage{font-size:15px}.live-details{margin-top:9px}.live-details .metric{padding:18px 20px}.live-details .metric-caption{margin-top:5px}}
+/* Keep the weather scene and rain summary in view. Open dense readings on demand. */
+.rain-summary.metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 630px; }
+.rain-summary .metric { border-bottom: 0; }
+.rain-summary .metric:first-child { border-right: 1px solid color-mix(in srgb, var(--hero-ink) 13%, transparent); }
+.detail-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; position: relative; z-index: 8; }
+.detail-links button {
+  min-height: 44px; padding: 0 13px; border-radius: 14px; font: inherit; font-size: 13px;
+  color: var(--hero-ink); background: var(--glass); border: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+  cursor: pointer;
+}
+.detail-links button:hover { border-color: currentColor; }
+.detail-links span { margin-left: 4px; }
+html:has(.weather-sheet[open]) { overflow: hidden; }
+.weather-sheet {
+  width: min(900px, calc(100% - 48px)); max-height: 86dvh; padding: 0; overflow: auto;
+  overscroll-behavior: contain; border: 1px solid #d8e4ed; border-radius: 24px;
+  color: #17384f; background: #f4f8fc; box-shadow: 0 24px 90px #081a3440;
+}
+.weather-sheet::backdrop { background: #0c1d36a6; }
+.sheet-header {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  position: sticky; top: 0; z-index: 2; background: #f4f8fc; padding: 12px 24px;
+  border-bottom: 1px solid #d8e4ed;
+}
+.sheet-header h2 { font-size: 22px; margin: 0; }
+.sheet-header button {
+  width: 44px; height: 44px; border-radius: 50%; border: 0; color: inherit;
+  background: #e5edf5; font-size: 24px; cursor: pointer;
+}
+.sheet-body { padding: 22px 24px 26px; }
+.sheet-body .section-header { margin: 0 0 12px; }
+.sheet-body .section-header h3 { margin: 0; font-size: 18px; }
+.sheet-body .sheet-section + .sheet-section { margin-top: 24px; }
+.sheet-body .condition-desc { max-width: 64ch; margin: 0 0 16px; color: #3d576d; }
+.sheet-body .metrics { padding: 0; }
+.sheet-body .air-panel { margin-bottom: 14px; min-height: auto; }
+@media (max-width: 720px) {
+  .rain-summary .metric:nth-child(-n+2) { border-bottom: 0; }
+  .weather-sheet { width: 100%; max-width: 100%; margin: auto 0 0; border-radius: 24px 24px 0 0; }
+  .sheet-header { padding: 10px 18px; }
+  .sheet-body { padding: 18px 18px max(22px, env(safe-area-inset-bottom)); }
+}
 </style>
 </head>
 <body>
@@ -128,7 +170,7 @@
  <section class="hero" id="now">
   <div class="atmosphere" id="atmosphere" aria-hidden="true"><div class="sky-glow"></div><div class="rays"></div><div class="celestial" id="celestial"></div><canvas id="skyCanvas"></canvas><div class="flash-overlay" id="flashOverlay"></div></div>
   <div class="container">
-   <header class="nav"><a class="wordmark" href="#now" aria-label="澳門天氣，返回頁首"><span class="wordmark-mark"></span>澳門天氣 <small>MACAU WEATHER</small></a><nav class="navlinks" aria-label="主要導覽"><a href="#now">現在</a><a href="#detail">即時詳情</a><a href="#hourly">每小時</a><a href="#week">七日預報</a><a href="#environment">城市環境</a></nav><div class="nav-actions"><a class="github-link" href="https://github.com/HiNesslio/macau-weather" target="_blank" rel="noopener noreferrer" aria-label="在 GitHub 查看澳門天氣開源專案（MIT 授權）"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.16 1.73 1.16 1 1.72 2.62 1.22 3.26.94.1-.73.39-1.22.71-1.5-2.5-.28-5.13-1.25-5.13-5.57 0-1.23.44-2.24 1.16-3.03-.12-.28-.5-1.43.11-2.99 0 0 .95-.3 3.08 1.15a10.7 10.7 0 0 1 5.61 0c2.13-1.44 3.08-1.15 3.08-1.15.61 1.56.23 2.71.11 2.99.72.79 1.16 1.8 1.16 3.03 0 4.33-2.64 5.28-5.15 5.56.4.35.76 1.03.76 2.08v3.1c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg><span>GitHub<span class="open-source-copy"> 開源</span></span></a><div class="meta-label">正在更新 · SMG</div></div></header>
+   <header class="nav"><a class="wordmark" href="#now" aria-label="澳門天氣，返回頁首"><span class="wordmark-mark"></span>澳門天氣 <small>MACAU WEATHER</small></a><div class="nav-actions"><a class="github-link" href="https://github.com/HiNesslio/macau-weather" target="_blank" rel="noopener noreferrer" aria-label="在 GitHub 查看澳門天氣開源專案（MIT 授權）"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.16 1.73 1.16 1 1.72 2.62 1.22 3.26.94.1-.73.39-1.22.71-1.5-2.5-.28-5.13-1.25-5.13-5.57 0-1.23.44-2.24 1.16-3.03-.12-.28-.5-1.43.11-2.99 0 0 .95-.3 3.08 1.15a10.7 10.7 0 0 1 5.61 0c2.13-1.44 3.08-1.15 3.08-1.15.61 1.56.23 2.71.11 2.99.72.79 1.16 1.8 1.16 3.03 0 4.33-2.64 5.28-5.15 5.56.4.35.76 1.03.76 2.08v3.1c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg><span>GitHub<span class="open-source-copy"> 開源</span></span></a><div class="meta-label">正在更新 · SMG</div></div></header>
    <section class="warning-region" id="warningRegion" aria-label="氣象警告" data-mode="loading">
     <div class="warning-summary"><span id="warningSummary" role="status">正在查詢氣象警告</span><a href="https://www.smg.gov.mo/zh" target="_blank" rel="noopener noreferrer">氣象局 ↗</a></div>
     <div class="warning-cards" id="warningCards"></div><p class="warning-notice" id="warningNotice" hidden></p>
@@ -136,15 +178,18 @@
    <div class="hero-main">
     <div class="location"><svg width="17" height="17"><use href="#i-pin"/></svg><span>澳門</span><span class="small-dot"></span><span id="dateLabel">11 月 5 日</span></div>
     <div class="temp" id="temperatureLine"><span id="currentTemp">—</span><span class="unit">°</span></div>
-    <div class="condition-name" id="conditionName">正在取得實況</div><div class="condition-desc" id="conditionDescription">正在讀取澳門氣象局資料。</div>
+    <div class="condition-name" id="conditionName">正在取得實況</div>
     <div class="highlow"><span>預測最高 <strong id="hi">—</strong>　最低 <strong id="lo">—</strong></span><span>體感評級 <strong id="feels">—</strong></span><span id="nightMessage">日間場景</span></div>
    </div>
-   <section id="detail" class="live-details" aria-label="即時天氣詳情"><div class="metrics">
-   <div class="metric"><div class="metric-title"><svg><use href="#i-rain"/></svg>降雨機率</div><div class="metric-value" id="rainChance">—</div><div class="metric-caption">本小時預報</div></div>
-   <div class="metric"><div class="metric-title"><svg><use href="#i-wind"/></svg>風速</div><div class="metric-value" id="wind">—</div><div class="metric-caption" id="windDirection">未提供</div></div>
-   <div class="metric"><div class="metric-title"><svg><use href="#i-droplet"/></svg>相對濕度</div><div class="metric-value" id="humidity">—</div></div>
-   <div class="metric"><div class="metric-title"><svg><use href="#i-sun"/></svg>紫外線指數</div><div class="metric-value" id="uv">—</div><div class="metric-caption"><span id="uvTime">正在取得官方讀數</span></div></div>
+   <section class="live-details" aria-label="降雨概況"><div class="metrics rain-summary">
+   <div class="metric"><div class="metric-title"><svg><use href="#i-rain"/></svg>降雨機率</div><div class="metric-value" id="rainChance">—</div><div class="metric-caption">本小時 · Open-Meteo</div></div>
+    <div class="metric"><div class="metric-title"><svg><use href="#i-droplet"/></svg>過去一小時雨量</div><div class="metric-value" id="observedRain">—</div><div class="metric-caption" id="rainStation">大炮台 · 氣象局實測</div></div>
    </div></section>
+   <nav class="detail-links" aria-label="天氣詳情">
+    <button type="button" data-sheet="detail" aria-haspopup="dialog">即時詳情 <span aria-hidden="true">›</span></button>
+    <button type="button" data-sheet="forecast" aria-haspopup="dialog">天氣預報 <span aria-hidden="true">›</span></button>
+    <button type="button" data-sheet="environmentSheet" aria-haspopup="dialog">城市環境 <span aria-hidden="true">›</span></button>
+   </nav>
    <div class="hero-dock">
     <div class="dock-head"><div class="dock-actions">
       <button type="button" class="frost-action" id="motionBtn" aria-pressed="false" aria-label="暫停或播放天氣動畫"><svg><use id="motionIcon" href="#i-pause"/></svg><span class="sr-only" id="motionText">暫停動畫</span></button>
@@ -154,22 +199,44 @@
   </div>
  </section>
  <main class="main">
-  <section class="container reveal" id="hourly"><div class="section-header"><h2>每小時</h2></div>
+  <dialog class="weather-sheet" id="detail" aria-labelledby="detailTitle">
+   <header class="sheet-header"><h2 id="detailTitle">即時詳情</h2><form method="dialog"><button type="submit" autofocus aria-label="關閉即時詳情">×</button></form></header>
+   <div class="sheet-body">
+<div class="condition-desc" id="conditionDescription">正在讀取澳門氣象局資料。</div>
+<div class="metrics">   <div class="metric"><div class="metric-title"><svg><use href="#i-wind"/></svg>風速</div><div class="metric-value" id="wind">—</div><div class="metric-caption" id="windDirection">未提供</div></div>
+   <div class="metric"><div class="metric-title"><svg><use href="#i-droplet"/></svg>相對濕度</div><div class="metric-value" id="humidity">—</div></div>
+   <div class="metric"><div class="metric-title"><svg><use href="#i-sun"/></svg>紫外線指數</div><div class="metric-value" id="uv">—</div><div class="metric-caption"><span id="uvTime">正在取得官方讀數</span></div></div></div>
+   </div>
+  </dialog>
+  <dialog class="weather-sheet" id="forecast" aria-labelledby="forecastTitle">
+   <header class="sheet-header"><h2 id="forecastTitle">天氣預報</h2><form method="dialog"><button type="submit" autofocus aria-label="關閉天氣預報">×</button></form></header>
+   <div class="sheet-body">
+  <section class="sheet-section" id="hourly"><div class="section-header"><h3>逐小時預報</h3><span class="caption">Open-Meteo</span></div>
    <div class="panel hourly">
     <div class="hour-scroller"><div class="hour-frame"><div class="hour-grid" id="hourLabels"></div><div class="hour-grid" id="hourIcons"></div><div class="hour-grid" id="hourTemps"></div>
      <svg viewBox="0 0 960 66" preserveAspectRatio="none" class="hour-chart" aria-hidden="true"><defs><linearGradient id="hourGrad" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#b1d6ed" stop-opacity=".44"/><stop offset="1" stop-color="#b1d6ed" stop-opacity="0"/></linearGradient></defs><path id="hourArea" class="area"/><path id="hourLine" class="line"/><g id="hourDots"></g></svg>
      <div class="hour-bottom"><strong>降雨機率</strong></div><div class="rain-grid" id="hourRains"></div></div></div>
    </div></section>
-  <section class="container reveal" id="week"><div class="section-header"><h2>七日預報</h2></div><div class="weekly-grid"><div class="panel week-panel"><div class="week-scroller"><div class="week-days" id="weekDays"></div></div></div><div class="panel air-panel"><div><div class="eyebrow">PM2.5</div><div class="air-value" id="aqi">—</div><div class="air-level" id="aqiLevel">µg/m³</div></div><div><div class="air-foot" id="airStation">正在讀取官方測站資料</div></div></div></div></section>
-  <section class="container reveal" id="environment">
-   <div class="section-header"><h2>城市環境</h2></div>
+  <section class="sheet-section" id="week"><div class="section-header"><h3>七日預報</h3><span class="caption">澳門氣象局</span></div><div><div class="panel week-panel"><div class="week-scroller"><div class="week-days" id="weekDays"></div></div></div></div></section>
+
+   </div>
+  </dialog>
+  <dialog class="weather-sheet" id="environmentSheet" aria-labelledby="environmentSheetTitle">
+   <header class="sheet-header"><h2 id="environmentSheetTitle">城市環境</h2><form method="dialog"><button type="submit" autofocus aria-label="關閉城市環境">×</button></form></header>
+   <div class="sheet-body">
+  <section class="sheet-section" id="environment">
+<div class="panel air-panel"><div><div class="eyebrow">PM2.5</div><div class="air-value" id="aqi">—</div><div class="air-level" id="aqiLevel">µg/m³</div></div><div><div class="air-foot" id="airStation">正在讀取官方測站資料</div></div></div>
    <div class="panel environment-panel"><div class="panel-header">空氣污染物實測濃度 <span class="hint" id="airTime">正在取得資料</span></div><div class="table-scroller" id="airReadings"><p class="empty-state">正在讀取各站空氣資料…</p></div><p class="table-note">µg/m³；CO：mg/m³</p></div>
    <div class="panel environment-panel"><div class="panel-header">空氣質量指數預報 <span class="hint" id="airForecastTime">官方預報</span></div><div id="airForecast"><p class="empty-state">正在讀取官方預報…</p></div></div>
    <div class="panel environment-panel"><div class="panel-header">各區氣象站 <span class="hint" id="stationTime">正在取得資料</span></div><div class="table-scroller" id="stationReadings"><p class="empty-state">正在讀取各站實況…</p></div></div>
   </section>
+
+   </div>
+  </dialog>
   <footer class="container footer"><strong>澳門天氣</strong><p class="sources"><a href="https://xml.smg.gov.mo/" target="_blank" rel="noopener noreferrer">SMG 官方資料</a> · <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo 模型預報</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a><br>警告以氣象局公告為準。</p></footer>
  </main>
 </div>
+<script type="module" src="./assets/weather-sheets.js"></script>
 <script type="module">
 import { inferScene, solarState } from './assets/weather-state.js';
 import { CloudRenderer } from './assets/cloud-renderer.js';
@@ -284,8 +351,14 @@ function renderEnvironment(d){
  $('airForecastTime').textContent=forecast?'發布 '+fmtTime(forecast.publishedAt):'暫未能取得';
  $('airForecast').innerHTML=forecast?'<p class="table-note">'+esc(forecast.description)+'</p><div class="forecast-areas">'+forecast.areas.map(a=>'<div><span>'+esc(a.name)+'</span><strong>'+esc(a.range)+'</strong><span>'+esc(a.level)+'</span><small>有效日期 '+esc(a.validFor)+'</small></div>').join('')+'</div>':'<p class="empty-state">官方空氣質量預報暫未能取得。</p>';
  const weather=d.stations?.stations||[];
+ const rainStation=weather.find(station=>station.code==='FM');
+ const hasRain=Number.isFinite(rainStation?.rainHour);
+ $('observedRain').innerHTML=hasRain?esc(rainStation.rainHour)+'<small>mm</small>':'—';
+ $('rainStation').textContent=hasRain
+   ? '大炮台 · '+dated('觀測',rainStation.observedAt)
+   : '大炮台 · 氣象局實測';
  $('stationTime').textContent=d.stations?dated('發布',d.stations.publishedAt):'暫未能取得';
- $('stationReadings').innerHTML=weather.length?table(['氣象站','觀測時間','氣溫 °C','濕度 %','風速 km/h','陣風 km/h','風向','露點 °C','海平面氣壓 hPa'],weather.map(v=>[v.name,fmtTime(v.observedAt),reading(v.temperature),reading(v.humidity),reading(v.windSpeed),reading(v.windGust),v.windDirection||'—',reading(v.dewPoint),reading(v.pressure)])):'<p class="empty-state">各區氣象站資料暫未能取得。</p>';
+ $('stationReadings').innerHTML=weather.length?table(['氣象站','觀測時間','氣溫 °C','過去一小時雨量 mm','今日雨量 mm','濕度 %','風速 km/h','陣風 km/h','風向','露點 °C','海平面氣壓 hPa'],weather.map(v=>[v.name,fmtTime(v.observedAt),reading(v.temperature),reading(v.rainHour),reading(v.rainToday),reading(v.humidity),reading(v.windSpeed),reading(v.windGust),v.windDirection||'—',reading(v.dewPoint),reading(v.pressure)])):'<p class="empty-state">各區氣象站資料暫未能取得。</p>';
 }
 function applyLive(){
  resetUnverified();
