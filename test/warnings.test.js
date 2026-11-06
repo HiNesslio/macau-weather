@@ -48,3 +48,14 @@ test('warning API never caches a complete outage or serves stale warning cache',
  const res={headers:{},setHeader(k,v){this.headers[k]=v;},status(n){this.code=n;return this;},json(d){this.body=d;}};
  try{await handler({method:'GET'},res);assert.equal(res.code,503);assert.equal(res.headers['Cache-Control'],'no-store');assert.equal(res.body.unavailable.length,6);}finally{globalThis.fetch=original;}
 });
+
+test('temperature advisories distinguish published bulletins from no data', async () => {
+ const data = await loadWarnings(async url => {
+  if (url.includes('temperatureAlert')) return new Response('<rss><channel><item><title>黃色高溫提示</title><description>請注意防暑</description></item></channel></rss>');
+  if (url.includes('tempDropAlert')) return new Response('<rss><channel><item><title>no data</title></item></channel></rss>');
+  return new Response('', { status: 503 });
+ });
+ assert.equal(data.advisories[0].active, true);
+ assert.equal(data.advisories[0].title, '黃色高溫提示');
+ assert.equal(data.advisories[1].active, false);
+});

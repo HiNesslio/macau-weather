@@ -100,9 +100,18 @@
 .nav{gap:20px}.nav-actions{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}.nav-actions .meta-label{margin-left:0}.github-link{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid color-mix(in srgb,currentColor 20%,transparent);border-radius:999px;font-size:12px;white-space:nowrap;color:var(--hero-ink);transition:background .2s}.github-link:hover{background:var(--glass)}.github-link svg{width:16px;height:16px;flex-shrink:0}@media(max-width:1100px){.navlinks{gap:12px}.nav{gap:14px}.wordmark small{display:none}}@media(max-width:720px){.nav{gap:12px}.nav-actions{gap:8px}.github-link{font-size:11px;padding:6px 8px;gap:5px}.open-source-copy{display:none}.github-link svg{width:14px;height:14px}}
 .highlow{margin-top:20px;padding:4px 0 14px;column-gap:28px;row-gap:10px;align-items:center;font-size:14px;line-height:1.8}.highlow strong{font-size:17px}.highlow #nightMessage{font-size:16px;color:var(--hero-ink)}.live-details{margin-top:8px}.live-details .metric{padding:22px 26px}.live-details .metric-caption{margin-top:7px}@media(max-width:720px){.highlow{padding:5px 0 15px;column-gap:20px;row-gap:9px;font-size:13px}.highlow strong{font-size:16px}.highlow #nightMessage{font-size:15px}.live-details{margin-top:9px}.live-details .metric{padding:18px 20px}.live-details .metric-caption{margin-top:5px}}
 /* Keep the weather scene and rain summary in view. Open dense readings on demand. */
-.rain-summary.metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 630px; }
-.rain-summary .metric { border-bottom: 0; }
-.rain-summary .metric:first-child { border-right: 1px solid color-mix(in srgb, var(--hero-ink) 13%, transparent); }
+.live-details .metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.live-details .metric:nth-child(-n+3) { border-bottom: 1px solid color-mix(in srgb, var(--hero-ink) 13%, transparent); }
+.live-details .metric:nth-child(3n) { border-right: 0; }
+@media (min-width: 1100px) {
+  .live-details .metrics { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .live-details .metric { padding-inline: 17px; }
+  .live-details .metric:nth-child(-n+3) { border-bottom: 0; }
+  .live-details .metric:nth-child(3) { border-right: 1px solid color-mix(in srgb, var(--hero-ink) 13%, transparent); }
+}
+.live-details h2, .forecast-home > h2 { font-size: 22px; margin: 0 0 12px; }
+.forecast-home .condition-desc { color: #3d576d; margin: 0 0 18px; max-width: 65ch; }
+#weatherAdvisories:not([hidden]) { margin-top: 10px; padding: 12px 14px; border-radius: 12px; background: var(--glass); font-size: 14px; line-height: 1.6; }
 .detail-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; position: relative; z-index: 8; }
 .detail-links button {
   min-height: 44px; padding: 0 13px; border-radius: 14px; font: inherit; font-size: 13px;
@@ -136,7 +145,10 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
 .sheet-body .metrics { padding: 0; }
 .sheet-body .air-panel { margin-bottom: 14px; min-height: auto; }
 @media (max-width: 720px) {
-  .rain-summary .metric:nth-child(-n+2) { border-bottom: 0; }
+  .live-details .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .live-details .metric:nth-child(3) { border-right: 1px solid color-mix(in srgb, var(--hero-ink) 13%, transparent); }
+  .live-details .metric:nth-child(even) { border-right: 0; }
+  .live-details .metric:nth-child(4) { border-bottom: 1px solid color-mix(in srgb, var(--hero-ink) 13%, transparent); }
   .weather-sheet { width: 100%; max-width: 100%; margin: auto 0 0; border-radius: 24px 24px 0 0; }
   .sheet-header { padding: 10px 18px; }
   .sheet-body { padding: 18px 18px max(22px, env(safe-area-inset-bottom)); }
@@ -172,24 +184,27 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
   <div class="container">
    <header class="nav"><a class="wordmark" href="#now" aria-label="澳門天氣，返回頁首"><span class="wordmark-mark"></span>澳門天氣 <small>MACAU WEATHER</small></a><div class="nav-actions"><a class="github-link" href="https://github.com/HiNesslio/macau-weather" target="_blank" rel="noopener noreferrer" aria-label="在 GitHub 查看澳門天氣開源專案（MIT 授權）"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.16 1.73 1.16 1 1.72 2.62 1.22 3.26.94.1-.73.39-1.22.71-1.5-2.5-.28-5.13-1.25-5.13-5.57 0-1.23.44-2.24 1.16-3.03-.12-.28-.5-1.43.11-2.99 0 0 .95-.3 3.08 1.15a10.7 10.7 0 0 1 5.61 0c2.13-1.44 3.08-1.15 3.08-1.15.61 1.56.23 2.71.11 2.99.72.79 1.16 1.8 1.16 3.03 0 4.33-2.64 5.28-5.15 5.56.4.35.76 1.03.76 2.08v3.1c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg><span>GitHub<span class="open-source-copy"> 開源</span></span></a><div class="meta-label">正在更新 · SMG</div></div></header>
    <section class="warning-region" id="warningRegion" aria-label="氣象警告" data-mode="loading">
-    <div class="warning-summary"><span id="warningSummary" role="status">正在查詢氣象警告</span><a href="https://www.smg.gov.mo/zh" target="_blank" rel="noopener noreferrer">氣象局 ↗</a></div>
-    <div class="warning-cards" id="warningCards"></div><p class="warning-notice" id="warningNotice" hidden></p>
+    <div class="warning-summary"><span id="warningSummary" role="status">正在查詢氣象警告</span><a href="https://www.dsmg.gov.mo/zh-hant" target="_blank" rel="noopener noreferrer">氣象局 ↗</a></div>
+    <div class="warning-cards" id="warningCards"></div><div id="weatherAdvisories" role="status" hidden></div><p class="warning-notice" id="warningNotice" hidden></p>
    </section>
    <div class="hero-main">
     <div class="location"><svg width="17" height="17"><use href="#i-pin"/></svg><span>澳門</span><span class="small-dot"></span><span id="dateLabel">11 月 5 日</span></div>
     <div class="temp" id="temperatureLine"><span id="currentTemp">—</span><span class="unit">°</span></div>
     <div class="condition-name" id="conditionName">正在取得實況</div>
-    <div class="highlow"><span>預測最高 <strong id="hi">—</strong>　最低 <strong id="lo">—</strong></span><span>體感評級 <strong id="feels">—</strong></span><span id="nightMessage">日間場景</span></div>
+    <div class="highlow"><span><span id="extremaLabel">預測</span>最高 <strong id="hi">—</strong>　最低 <strong id="lo">—</strong></span><span>體感評級 <strong id="feels">—</strong></span><span id="nightMessage">日間場景</span></div>
    </div>
-   <section class="live-details" aria-label="降雨概況"><div class="metrics rain-summary">
+   <section class="live-details" id="detail" aria-labelledby="detailTitle">
+    <h2 id="detailTitle">即時詳情</h2>
+    <div class="metrics">
    <div class="metric"><div class="metric-title"><svg><use href="#i-rain"/></svg>降雨機率</div><div class="metric-value" id="rainChance">—</div><div class="metric-caption">本小時 · Open-Meteo</div></div>
-    <div class="metric"><div class="metric-title"><svg><use href="#i-droplet"/></svg>過去一小時雨量</div><div class="metric-value" id="observedRain">—</div><div class="metric-caption" id="rainStation">大炮台 · 氣象局實測</div></div>
-   </div></section>
-   <nav class="detail-links" aria-label="天氣詳情">
-    <button type="button" data-sheet="detail" aria-haspopup="dialog">即時詳情 <span aria-hidden="true">›</span></button>
-    <button type="button" data-sheet="forecast" aria-haspopup="dialog">天氣預報 <span aria-hidden="true">›</span></button>
-    <button type="button" data-sheet="environmentSheet" aria-haspopup="dialog">城市環境 <span aria-hidden="true">›</span></button>
-   </nav>
+    <div class="metric"><div class="metric-title"><svg><use href="#i-droplet"/></svg>過去一小時雨量</div><div class="metric-value" id="observedRain">—</div><div class="metric-caption" id="rainStation">大炮台 · 氣象局實測</div><div class="metric-caption" id="rainToday"></div></div>
+   <div class="metric"><div class="metric-title"><svg><use href="#i-wind"/></svg>風速</div><div class="metric-value" id="wind">—</div><div class="metric-caption" id="windDirection">未提供</div></div>
+   <div class="metric"><div class="metric-title"><svg><use href="#i-droplet"/></svg>相對濕度</div><div class="metric-value" id="humidity">—</div></div>
+   <div class="metric"><div class="metric-title"><svg><use href="#i-sun"/></svg>紫外線指數</div><div class="metric-value" id="uv">—</div><div class="metric-caption"><span id="uvTime">正在取得官方讀數</span></div></div>
+    <div class="metric"><div class="metric-title">PM2.5</div><div class="metric-value" id="aqi">—</div><div class="metric-caption"><span id="aqiLevel">µg/m³</span> · <span id="airStation">大潭山</span></div></div>
+    </div>
+   </section>
+   <div class="detail-links"><button type="button" data-sheet="environmentSheet" aria-haspopup="dialog">城市環境與各區測站 <span aria-hidden="true">›</span></button></div>
    <div class="hero-dock">
     <div class="dock-head"><div class="dock-actions">
       <button type="button" class="frost-action" id="motionBtn" aria-pressed="false" aria-label="暫停或播放天氣動畫"><svg><use id="motionIcon" href="#i-pause"/></svg><span class="sr-only" id="motionText">暫停動畫</span></button>
@@ -199,18 +214,9 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
   </div>
  </section>
  <main class="main">
-  <dialog class="weather-sheet" id="detail" aria-labelledby="detailTitle">
-   <header class="sheet-header"><h2 id="detailTitle">即時詳情</h2><form method="dialog"><button type="submit" autofocus aria-label="關閉即時詳情">×</button></form></header>
-   <div class="sheet-body">
-<div class="condition-desc" id="conditionDescription">正在讀取澳門氣象局資料。</div>
-<div class="metrics">   <div class="metric"><div class="metric-title"><svg><use href="#i-wind"/></svg>風速</div><div class="metric-value" id="wind">—</div><div class="metric-caption" id="windDirection">未提供</div></div>
-   <div class="metric"><div class="metric-title"><svg><use href="#i-droplet"/></svg>相對濕度</div><div class="metric-value" id="humidity">—</div></div>
-   <div class="metric"><div class="metric-title"><svg><use href="#i-sun"/></svg>紫外線指數</div><div class="metric-value" id="uv">—</div><div class="metric-caption"><span id="uvTime">正在取得官方讀數</span></div></div></div>
-   </div>
-  </dialog>
-  <dialog class="weather-sheet" id="forecast" aria-labelledby="forecastTitle">
-   <header class="sheet-header"><h2 id="forecastTitle">天氣預報</h2><form method="dialog"><button type="submit" autofocus aria-label="關閉天氣預報">×</button></form></header>
-   <div class="sheet-body">
+  <section class="container forecast-home" aria-labelledby="forecastTitle">
+   <h2 id="forecastTitle">天氣預報</h2>
+   <div class="condition-desc" id="conditionDescription">正在讀取澳門氣象局資料。</div>
   <section class="sheet-section" id="hourly"><div class="section-header"><h3>逐小時預報</h3><span class="caption">Open-Meteo</span></div>
    <div class="panel hourly">
     <div class="hour-scroller"><div class="hour-frame"><div class="hour-grid" id="hourLabels"></div><div class="hour-grid" id="hourIcons"></div><div class="hour-grid" id="hourTemps"></div>
@@ -219,13 +225,12 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
    </div></section>
   <section class="sheet-section" id="week"><div class="section-header"><h3>七日預報</h3><span class="caption">澳門氣象局</span></div><div><div class="panel week-panel"><div class="week-scroller"><div class="week-days" id="weekDays"></div></div></div></div></section>
 
-   </div>
-  </dialog>
+  </section>
   <dialog class="weather-sheet" id="environmentSheet" aria-labelledby="environmentSheetTitle">
    <header class="sheet-header"><h2 id="environmentSheetTitle">城市環境</h2><form method="dialog"><button type="submit" autofocus aria-label="關閉城市環境">×</button></form></header>
    <div class="sheet-body">
   <section class="sheet-section" id="environment">
-<div class="panel air-panel"><div><div class="eyebrow">PM2.5</div><div class="air-value" id="aqi">—</div><div class="air-level" id="aqiLevel">µg/m³</div></div><div><div class="air-foot" id="airStation">正在讀取官方測站資料</div></div></div>
+
    <div class="panel environment-panel"><div class="panel-header">空氣污染物實測濃度 <span class="hint" id="airTime">正在取得資料</span></div><div class="table-scroller" id="airReadings"><p class="empty-state">正在讀取各站空氣資料…</p></div><p class="table-note">µg/m³；CO：mg/m³</p></div>
    <div class="panel environment-panel"><div class="panel-header">空氣質量指數預報 <span class="hint" id="airForecastTime">官方預報</span></div><div id="airForecast"><p class="empty-state">正在讀取官方預報…</p></div></div>
    <div class="panel environment-panel"><div class="panel-header">各區氣象站 <span class="hint" id="stationTime">正在取得資料</span></div><div class="table-scroller" id="stationReadings"><p class="empty-state">正在讀取各站實況…</p></div></div>
@@ -354,6 +359,8 @@ function renderEnvironment(d){
  const rainStation=weather.find(station=>station.code==='FM');
  const hasRain=Number.isFinite(rainStation?.rainHour);
  $('observedRain').innerHTML=hasRain?esc(rainStation.rainHour)+'<small>mm</small>':'—';
+ $('rainToday').textContent=Number.isFinite(rainStation?.rainToday)
+   ? '今日累積 '+rainStation.rainToday+' mm' : '';
  $('rainStation').textContent=hasRain
    ? '大炮台 · '+dated('觀測',rainStation.observedAt)
    : '大炮台 · 氣象局實測';
@@ -369,20 +376,32 @@ function applyLive(){
  $('humidity').innerHTML=Number.isFinite(c.humidity)?esc(c.humidity)+'<small>%</small>':'—';
  $('wind').innerHTML=Number.isFinite(c.windSpeed)?esc(c.windSpeed)+'<small>km/h</small>':'—';
  $('windDirection').textContent=c.windDirection||'未提供';
- const daily=d.dailyForecast||{};
- $('hi').textContent=Number.isFinite(daily.high)?daily.high+'°':'—';
- $('lo').textContent=Number.isFinite(daily.low)?daily.low+'°':'—';
- $('hi').setAttribute('title','當日預測最高溫 · '+(daily.date||'暫未提供'));
- $('lo').setAttribute('title','當日預測最低溫 · '+(daily.date||'暫未提供'));
+ const macauDate=new Intl.DateTimeFormat('en-CA',{
+   timeZone:'Asia/Macau',year:'numeric',month:'2-digit',day:'2-digit'
+ }).format(new Date());
+ const forecast=d.dailyForecast?.date===macauDate ? d.dailyForecast : null;
+ const hasForecast=Number.isFinite(forecast?.high)&&Number.isFinite(forecast?.low);
+ const observedDate=(c.validFor||c.publishedAt||'').slice(0,10);
+ const observed=observedDate===macauDate&&
+   (Number.isFinite(c.observedHigh)||Number.isFinite(c.observedLow));
+ const useObserved=!hasForecast&&observed;
+ const extrema=useObserved ? {high:c.observedHigh,low:c.observedLow} : forecast;
+ const label=useObserved?'實測':'預測';
+ $('extremaLabel').textContent=label;
+ for(const [id,key,caption] of [['hi','high','最高'],['lo','low','最低']]){
+   const value=extrema?.[key];
+   $(id).textContent=Number.isFinite(value)?value+'°':'—';
+   $(id).title='當日'+label+caption+'溫 · '+macauDate;
+ }
  $('feels').textContent=c.feelsLikeDescription||'—';
  $('conditionDescription').textContent=f.description||c.description||'官方天氣描述暫未能取得';
- const guess=inferScene(c.description);
+ const guess=inferScene(c.description,c.weatherCode);
  renderHourly(d.hourly?.hours||[]);
  if(guess)pick(guess);else{pick('cloudy');app.dataset.condition='unknown';}
  $('conditionName').textContent=c.description||'實況暫缺';
  syncSolar();renderEnvironment(d);
  const forecasts=d.sevenDays?.days||[];
- if(forecasts.length){$('weekDays').innerHTML=forecasts.map((v,i)=>`<div class="day"><div class="day-title">${esc(v.date.slice(5).replace('-','/'))}</div>${svg(map.get(inferScene(v.description))?.icon||'cloud',35)}<div class="day-temp">${Number.isFinite(v.high)?esc(v.high)+'°':'—'} <span>${Number.isFinite(v.low)?esc(v.low)+'°':'—'}</span></div><div class="day-rain" title="${esc(v.description)}">濕度 ${esc(v.humidity||'—')}</div><div style="font-size:12px;line-height:1.6;margin-top:8px">${esc(v.description.split('。')[0])}</div></div>`).join('');}
+ if(forecasts.length){$('weekDays').innerHTML=forecasts.map((v,i)=>`<div class="day"><div class="day-title">${esc(v.date.slice(5).replace('-','/'))}</div>${svg(map.get(inferScene(v.description,v.weatherCode))?.icon||'cloud',35)}<div class="day-temp">${Number.isFinite(v.high)?esc(v.high)+'°':'—'} <span>${Number.isFinite(v.low)?esc(v.low)+'°':'—'}</span></div><div class="day-rain" title="${esc(v.description)}">濕度 ${esc(v.humidity||'—')}</div><div style="font-size:12px;line-height:1.6;margin-top:8px">${esc(v.description.split('。')[0])}</div></div>`).join('');}
  else if(d.sevenDays?.text){$('weekDays').innerHTML='<div style="grid-column:span 7;text-align:left;padding:20px;line-height:1.9;font-size:14px;color:#3d576d">'+esc(d.sevenDays.text)+'</div>';}
  else {$('weekDays').innerHTML='<div style="grid-column:span 7;padding:20px;text-align:left">官方七日預報暫時未能讀取。</div>';}
  const published=c.validFor||c.publishedAt;
@@ -405,7 +424,12 @@ function renderWarnings(){
  if($('warningCards').innerHTML!==view.cards)$('warningCards').innerHTML=view.cards;
  $('warningNotice').hidden=!view.uncertain;
  $('warningNotice').textContent=view.uncertain?'部分警告狀態未能確認，請查看氣象局公告。':'';
- app.classList.toggle('has-warning',view.mode==='active'||view.mode==='uncertain');
+ const advisories=(warningPayload?.advisories||[]).filter(item=>item.active);
+ const advisoryRegion=$('weatherAdvisories');
+ const advisoryText=advisories.map(item=>item.title+(item.description?'：'+item.description:'')+(item.unverified?'（狀態待確認）':'')).join('　');
+ if(advisoryRegion.textContent!==advisoryText)advisoryRegion.textContent=advisoryText;
+ advisoryRegion.hidden=!advisories.length;
+ app.classList.toggle('has-warning',view.mode==='active'||view.mode==='uncertain'||advisories.length>0);
 }
 async function refreshWarnings(){
  if(warningBusy)return;warningBusy=true;if(warningPayload)renderWarnings();
@@ -413,9 +437,13 @@ async function refreshWarnings(){
   const res=await fetch('/api/warnings',{cache:'no-store',signal:AbortSignal.timeout(9000)});
   if(!res.ok)throw Error('Warnings unavailable');const next=await res.json();
   if(!Array.isArray(next.entries)||!next.entries.length)throw Error('Missing warning status');
-  warningPayload=mergeWarnings(warningPayload,next);
+  const advisories=(next.advisories||[]).map(item=>{
+   const previous=warningPayload?.advisories?.find(entry=>entry.key===item.key);
+   return item.active===null&&previous?.active?{...previous,unverified:true}:item;
+  });
+  warningPayload={...mergeWarnings(warningPayload,next),advisories};
  }catch{
-  warningPayload=warningPayload?{...warningPayload,entries:warningPayload.entries.map(e=>e.active?{...e,unverified:true}:{...e,active:null})}:null;
+  warningPayload=warningPayload?{...warningPayload,advisories:warningPayload.advisories?.map(item=>({...item,unverified:true})),entries:warningPayload.entries.map(e=>e.active?{...e,unverified:true}:{...e,active:null})}:null;
  }finally{warningBusy=false;renderWarnings();}
 }
 function pick(id){
