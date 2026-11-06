@@ -2,13 +2,14 @@
 const smgScenes = new Map(Object.entries({
   '01':'sunny', a1:'sunny', '02':'partly', a2:'partly', '03':'cloudy', '04':'overcast',
   '06':'fog', '07':'haze', '08':'mist', '10':'drizzle', '12':'rain', '13':'heavy',
-  '16':'showers', '17':'downpour', '18':'thunderRain', '21':'dry', '24':'thunder',
+  '16':'showers', '17':'downpour', '18':'thunderRain', '21':'dry', '24':'squallThunder',
   '25':'thunder', '26':'humid', '27':'wind', '28':'rain', c8:'rain', '29':'showers', c9:'showers'
 }));
 export function inferScene(text, code) {
   const scene = smgScenes.get(String(code ?? '').trim().toLowerCase());
   if (scene) return scene;
   const t=String(text||'').replace(/(?:無|沒有|並無)(?:雷暴|雷雨|雨|霧)/g,'');
+  if(/狂風雷暴/.test(t))return 'squallThunder';
   if(/雷雨|雷暴伴雨/.test(t))return 'thunderRain';
   if(/雷暴|閃電/.test(t))return 'thunder';
   if(/大驟雨|猛烈驟雨/.test(t))return 'downpour';

@@ -17,3 +17,10 @@ test('Macau astronomical fallback handles night, midday and the next local day',
  assert.equal(solarState(new Date('2026-11-05T12:00:00+08:00')).night,false);
  assert.equal(solarState(new Date('2026-11-06T00:01:00+08:00')).night,true);
 });
+
+test('SMG codes take precedence over mixed descriptions and distinguish squalls', () => {
+ assert.equal(inferScene('多雲，早晚有微雨', '03'), 'cloudy');
+ assert.equal(inferScene('雷暴', '24'), 'squallThunder');
+ assert.equal(inferScene('雷暴', '25'), 'thunder');
+ assert.equal(inferScene('有驟雨', 'unknown'), 'showers');
+});

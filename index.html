@@ -21,12 +21,12 @@
 .celestial:before{content:"";inset:12%;position:absolute;border-radius:50%;background:radial-gradient(circle at 28% 45%,rgba(162,189,206,.22) 0 8%,transparent 9%),radial-gradient(circle at 68% 24%,rgba(162,189,206,.20) 0 9%,transparent 10%),radial-gradient(circle at 57% 73%,rgba(162,189,206,.16) 0 13%,transparent 14%);opacity:0;transition:opacity 1s}
 .weather-shell[data-night="true"] .celestial{background:radial-gradient(circle at 31% 23%,#fff 0%,#e6f1fd 55%,#bdd2e7 100%);box-shadow:0 0 55px 12px rgba(185,220,249,.22),0 0 125px 58px rgba(136,188,236,.12)}
 .weather-shell[data-night="true"] .celestial:before{opacity:1}.weather-shell[data-night="true"] .sky-glow{opacity:.18}
-.weather-shell[data-condition="thunderRain"] .celestial,.weather-shell[data-condition="thunder"] .celestial,.weather-shell[data-condition="heavy"] .celestial,.weather-shell[data-condition="overcast"] .celestial,.weather-shell[data-condition="fog"] .celestial,.weather-shell[data-condition="haze"] .celestial{opacity:.08}
+.weather-shell[data-condition="squallThunder"] .celestial,.weather-shell[data-condition="thunderRain"] .celestial,.weather-shell[data-condition="thunder"] .celestial,.weather-shell[data-condition="heavy"] .celestial,.weather-shell[data-condition="overcast"] .celestial,.weather-shell[data-condition="fog"] .celestial,.weather-shell[data-condition="haze"] .celestial{opacity:.08}
 .weather-shell[data-condition="rain"] .celestial,.weather-shell[data-condition="cloudy"] .celestial,.weather-shell[data-condition="showers"] .celestial{opacity:.24}
 .weather-shell[data-condition="mist"] .celestial,.weather-shell[data-condition="drizzle"] .celestial{opacity:.43}
 .rays{z-index:0;position:absolute;top:-29px;right:3%;width:650px;height:650px;border-radius:50%;background:repeating-conic-gradient(from 10deg,rgba(255,255,255,.19) 0deg,transparent 9deg,transparent 24deg);-webkit-mask-image:radial-gradient(circle,transparent 0 23%,black 38%,transparent 68%);mask-image:radial-gradient(circle,transparent 0 23%,black 38%,transparent 68%);animation:rotate 110s linear infinite;opacity:.85;transition:opacity .8s}
 .weather-shell[data-night="true"] .rays{opacity:0}
-.weather-shell[data-condition="thunderRain"] .rays,.weather-shell[data-condition="thunder"] .rays,.weather-shell[data-condition="overcast"] .rays,.weather-shell[data-condition="rain"] .rays,.weather-shell[data-condition="heavy"] .rays,.weather-shell[data-condition="fog"] .rays{opacity:0}
+.weather-shell[data-condition="squallThunder"] .rays,.weather-shell[data-condition="thunderRain"] .rays,.weather-shell[data-condition="thunder"] .rays,.weather-shell[data-condition="overcast"] .rays,.weather-shell[data-condition="rain"] .rays,.weather-shell[data-condition="heavy"] .rays,.weather-shell[data-condition="fog"] .rays{opacity:0}
 .flash-overlay{position:absolute;inset:0;z-index:3;pointer-events:none;background:#eff7ff;mix-blend-mode:screen;opacity:0}
 .flash-overlay.strike{animation:flashing .6s ease-out}
 @keyframes flashing{0%,100%{opacity:0}10%{opacity:.45}18%{opacity:.06}29%{opacity:.31}45%{opacity:.04}}
@@ -153,6 +153,15 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
   .sheet-header { padding: 10px 18px; }
   .sheet-body { padding: 18px 18px max(22px, env(safe-area-inset-bottom)); }
 }
+.condition-card {
+  display: inline-flex; align-items: center; gap: 12px; max-width: 100%;
+  margin-top: 12px; padding: 10px 15px; border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--hero-ink) 15%, transparent);
+  background: var(--glass);
+}
+.condition-card svg { display: block; width: 32px; height: 32px; }
+.condition-label { color: var(--hero-soft); font-size: 11px; }
+.condition-card .condition-name { font-size: 22px; margin-top: 2px; letter-spacing: 0; }
 </style>
 </head>
 <body>
@@ -190,7 +199,10 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
    <div class="hero-main">
     <div class="location"><svg width="17" height="17"><use href="#i-pin"/></svg><span>澳門</span><span class="small-dot"></span><span id="dateLabel">11 月 5 日</span></div>
     <div class="temp" id="temperatureLine"><span id="currentTemp">—</span><span class="unit">°</span></div>
-    <div class="condition-name" id="conditionName">正在取得實況</div>
+    <div class="condition-card">
+     <span id="conditionIcon" aria-hidden="true" hidden><svg viewBox="0 0 40 40"><use id="conditionIconUse" href="#i-cloud"/></svg></span>
+     <div><div class="condition-label">氣象局實況</div><div class="condition-name" id="conditionName">正在取得實況</div></div>
+    </div>
     <div class="highlow"><span><span id="extremaLabel">預測</span>最高 <strong id="hi">—</strong>　最低 <strong id="lo">—</strong></span><span>體感評級 <strong id="feels">—</strong></span><span id="nightMessage">日間場景</span></div>
    </div>
    <section class="live-details" id="detail" aria-labelledby="detailTitle">
@@ -260,7 +272,8 @@ const scenes=[
 {id:'heavy',name:'大雨',group:'rain',icon:'heavy',col:['#314b65','#667f99','#b5c8d5'],cloud:1,sun:0,rain:5},
 {id:'thunder',name:'雷暴',group:'rain',icon:'thunder',col:['#1d3152','#4d6685','#a1b2c7'],cloud:1,sun:0,rain:4,lightning:true},
 {id:'thunderRain',name:'雷雨',group:'rain',icon:'thunder',col:['#253b5b','#576e8b','#9badc2'],cloud:1,sun:0,rain:5,lightning:true},
-{id:'wind',name:'大風',group:'special',icon:'wind',col:['#689dbd','#b5d1db','#eef5f6'],cloud:.7,sun:.42,windy:true},
+{id:'squallThunder',name:'狂風雷暴',group:'rain',icon:'thunder',col:['#1d3152','#4d6685','#a1b2c7'],cloud:1,sun:0,rain:4,lightning:true,windy:2},
+{id:'wind',name:'大風',group:'special',icon:'wind',col:['#689dbd','#b5d1db','#eef5f6'],cloud:.7,sun:.42,windy:1.65},
 {id:'gale',name:'狂風',group:'special',icon:'wind',col:['#537f9f','#a3c1d0','#e6f1f5'],cloud:.95,sun:.22,windy:2},
 {id:'mist',name:'薄霧',group:'special',icon:'fog',col:['#a4c3cb','#cfdee1','#f4f6f6'],cloud:.57,sun:.35,fog:1},
 {id:'fog',name:'霧',group:'special',icon:'fog',col:['#8c9fa8','#bacbd0','#e8eef0'],cloud:.64,sun:.06,fog:3},
@@ -276,7 +289,7 @@ function setTheme(s){
  const mix=(a,b,k)=>{const rgb=h=>h.match(/[a-f0-9]{2}/gi).map(v=>parseInt(v,16));const x=rgb(a),y=rgb(b);return 'rgb('+x.map((v,i)=>Math.round(v+(y[i]-v)*k)).join(',')+')'};
  const c=s.col.map((v,i)=>mix(nightColors[i],v,daylight));
  app.style.setProperty('--sky-top',c[0]);app.style.setProperty('--sky-middle',c[1]);app.style.setProperty('--sky-bottom',c[2]);
- const dark=daylight<.55||['heavy','thunder','thunderRain','overcast'].includes(s.id);
+ const dark=daylight<.55||['heavy','thunder','thunderRain','squallThunder','overcast'].includes(s.id);
  app.style.setProperty('--hero-ink',dark?'#f4f9ff':'#17384f');app.style.setProperty('--hero-soft',dark?'#c4d8e6':'#527791');
  app.style.setProperty('--glass',dark?'rgba(242,248,255,.15)':'rgba(255,255,255,.55)');
  app.style.setProperty('--golden',golden*.12);document.querySelector('meta[name="theme-color"]').content=c[0];
@@ -295,7 +308,7 @@ function sizeCanvas(){const rect=stage.getBoundingClientRect();canvasW=rect.widt
 function drawStars(g,t){g.save();for(const p of stars){const pulse=.46+.36*Math.sin(t*.3+p.phase);g.fillStyle=`rgba(245,251,255,${pulse})`;g.beginPath();g.arc(p.x,p.y,p.r,0,Math.PI*2);g.fill()}g.restore()}
 function drawFog(g,s,time){const density=s.fog||0;g.save();for(let i=0;i<6;i++){const y=canvasH*(.31+i*.105);const x=Math.sin(time*.15+i)*60;const rg=g.createLinearGradient(0,y-94,0,y+110);rg.addColorStop(0,'rgba(247,253,255,0)');rg.addColorStop(.5,`rgba(239,247,248,${.065+.057*density})`);rg.addColorStop(1,'rgba(244,249,250,0)');g.fillStyle=rg;g.fillRect(-100+x,y-94,canvasW+200,204)}g.restore()}
 function drawHaze(g,time){g.save();for(let i=0;i<8;i++){let y=canvasH*(.15+i*.085)+Math.sin(time*.12+i)*8;const r=g.createLinearGradient(0,y-50,0,y+85);r.addColorStop(0,'rgba(231,202,154,0)');r.addColorStop(.5,'rgba(243,214,168,.085)');r.addColorStop(1,'rgba(240,221,188,0)');g.fillStyle=r;g.fillRect(0,y-50,canvasW,135)}g.restore();}
-function drawRain(g,s,dt){const intensity=s.rain||0;const windy=s.windy;const op=night||['heavy','thunder','thunderRain'].includes(s.id)?.47:.36;for(let i=0;i<particles.length;i++){let p=particles[i];let speed=(4+intensity*3.3)*p.vel*p.z;const slant=windy?8:(s.id==='thunder'?4.7:2.7);p.y+=dt*speed;p.x-=dt*slant*p.z;if(p.y>canvasH+48){p.y=-Math.random()*150;p.x=Math.random()*(canvasW+60)}if(p.x<-35)p.x=canvasW+60;g.beginPath();g.moveTo(p.x,p.y);g.lineTo(p.x-slant*p.z*.85,p.y+p.len*p.z*(.62+intensity*.18));g.strokeStyle=`rgba(${night?'214,230,247': '104,161,200'},${Math.min(.57,op*p.z)})`;g.lineWidth=Math.max(.55,p.z*.85);g.stroke();
+function drawRain(g,s,dt){const intensity=s.rain||0;const windy=s.windy;const op=night||['heavy','thunder','thunderRain','squallThunder'].includes(s.id)?.47:.36;for(let i=0;i<particles.length;i++){let p=particles[i];let speed=(4+intensity*3.3)*p.vel*p.z;const slant=windy?8:(s.id==='thunder'?4.7:2.7);p.y+=dt*speed;p.x-=dt*slant*p.z;if(p.y>canvasH+48){p.y=-Math.random()*150;p.x=Math.random()*(canvasW+60)}if(p.x<-35)p.x=canvasW+60;g.beginPath();g.moveTo(p.x,p.y);g.lineTo(p.x-slant*p.z*.85,p.y+p.len*p.z*(.62+intensity*.18));g.strokeStyle=`rgba(${night?'214,230,247': '104,161,200'},${Math.min(.57,op*p.z)})`;g.lineWidth=Math.max(.55,p.z*.85);g.stroke();
  if(intensity>=4 && p.y>canvasH*.72 && random(i+Math.round(p.y))>.986){g.beginPath();g.ellipse(p.x,p.y,2+p.z*3,1+p.z,0,0,Math.PI*2);g.strokeStyle='rgba(218,236,249,.2)';g.stroke()}}
 }
 function drawWind(g,dt,time){for(let i=0;i<particles.length;i++){const p=particles[i];p.x-=dt*(5+p.z*6)*(map.get(current).windy||1);p.y+=Math.sin(p.phase+time*.9)*.35;if(p.x<-100){p.x=canvasW+80;p.y=random(i+Math.round(time))*canvasH}g.beginPath();g.moveTo(p.x,p.y);g.bezierCurveTo(p.x+25,p.y-3,p.x+55,p.y-2,p.x+100,p.y-6);g.strokeStyle=`rgba(235,247,255,${.045+.095*p.z})`;g.lineWidth=.7+p.z*.4;g.stroke()}}
@@ -398,7 +411,10 @@ function applyLive(){
  const guess=inferScene(c.description,c.weatherCode);
  renderHourly(d.hourly?.hours||[]);
  if(guess)pick(guess);else{pick('cloudy');app.dataset.condition='unknown';}
- $('conditionName').textContent=c.description||'實況暫缺';
+ const scene=map.get(guess);
+ $('conditionIcon').hidden=!scene;
+ if(scene)$('conditionIconUse').setAttribute('href','#i-'+scene.icon);
+ $('conditionName').textContent=c.description||scene?.name||'實況暫缺';
  syncSolar();renderEnvironment(d);
  const forecasts=d.sevenDays?.days||[];
  if(forecasts.length){$('weekDays').innerHTML=forecasts.map((v,i)=>`<div class="day"><div class="day-title">${esc(v.date.slice(5).replace('-','/'))}</div>${svg(map.get(inferScene(v.description,v.weatherCode))?.icon||'cloud',35)}<div class="day-temp">${Number.isFinite(v.high)?esc(v.high)+'°':'—'} <span>${Number.isFinite(v.low)?esc(v.low)+'°':'—'}</span></div><div class="day-rain" title="${esc(v.description)}">濕度 ${esc(v.humidity||'—')}</div><div style="font-size:12px;line-height:1.6;margin-top:8px">${esc(v.description.split('。')[0])}</div></div>`).join('');}
