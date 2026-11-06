@@ -161,13 +161,20 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
 }
 .condition-card svg { display: block; width: 32px; height: 32px; }
 .condition-label { color: var(--hero-soft); font-size: 11px; }
+.condition-card > span { flex: none; align-self: flex-start; }
+.condition-card .condition-desc { margin: 6px 0 0; font-size: 13px; }
+.wind-arrow { display: inline-block; margin-inline-end: 5px; }
 .condition-card .condition-name { font-size: 22px; margin-top: 2px; letter-spacing: 0; }
 </style>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
 <symbol id="i-sun" viewBox="0 0 40 40"><circle cx="20" cy="20" r="8" fill="#f6cb7b"/><g stroke="#eec279" stroke-width="2.4" stroke-linecap="round"><path d="M20 4v5m0 22v5M4 20h5m22 0h5M9 9l4 4m14 14 4 4M31 9l-4 4M13 27l-4 4"/></g></symbol>
-<symbol id="i-partly" viewBox="0 0 40 40"><circle cx="15" cy="15" r="8" fill="#f5cd7d"/><path d="M12 30h19a7 7 0 0 0 0-14 10 10 0 0 0-18.9 2.4A5.9 5.9 0 0 0 12 30" fill="#eaf5fb" stroke="#a4c6dc" stroke-width=".8"/></symbol>
+<symbol id="i-partly" viewBox="0 0 40 40">
+ <path d="M15 2v3M4 14h3m16-8 2-2M7 6 5 4M27 14h3" fill="none" stroke="#f5cd7d" stroke-width="1.8" stroke-linecap="round"/>
+ <circle cx="15" cy="14" r="7.5" fill="#f5cd7d"/>
+ <path d="M12 31h19a7 7 0 0 0 0-14 10 10 0 0 0-18.9 2.4A5.9 5.9 0 0 0 12 31Z" fill="#eaf5fb" stroke="#a4c6dc" stroke-width=".8"/>
+</symbol>
 <symbol id="i-cloud" viewBox="0 0 40 40"><path d="M8 30h25a7.7 7.7 0 0 0-.2-15.4 11.5 11.5 0 0 0-21.4 2A7 7 0 0 0 8 30" fill="#bdd4e5" stroke="#9fbbcf" stroke-width=".8"/></symbol>
 <symbol id="i-overcast" viewBox="0 0 40 40"><path d="M5 24h24a7 7 0 1 0-1.5-13.8A10 10 0 0 0 9.5 13 6 6 0 0 0 5 24Z" fill="#a6bacc"/><path d="M12 33h23a6.2 6.2 0 1 0-3.1-11.6A8.5 8.5 0 0 0 15 23.5 5.3 5.3 0 0 0 12 33Z" fill="#d8e5ee"/></symbol>
 <symbol id="i-drizzle" viewBox="0 0 40 40"><use href="#i-cloud"/><g stroke="#81b6d6" stroke-linecap="round" stroke-width="1.3"><path d="m13 31-1.5 3m10-3-1.5 3m10-3-1.5 3"/></g></symbol>
@@ -197,11 +204,11 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
     <div class="warning-cards" id="warningCards"></div><div id="weatherAdvisories" role="status" hidden></div><p class="warning-notice" id="warningNotice" hidden></p>
    </section>
    <div class="hero-main">
-    <div class="location"><svg width="17" height="17"><use href="#i-pin"/></svg><span>澳門</span><span class="small-dot"></span><span id="dateLabel">11 月 5 日</span></div>
+    <div class="location"><svg width="17" height="17"><use href="#i-pin"/></svg><span>澳門</span><span class="small-dot"></span><span id="dateLabel">—</span></div>
     <div class="temp" id="temperatureLine"><span id="currentTemp">—</span><span class="unit">°</span></div>
     <div class="condition-card">
      <span id="conditionIcon" aria-hidden="true" hidden><svg viewBox="0 0 40 40"><use id="conditionIconUse" href="#i-cloud"/></svg></span>
-     <div><div class="condition-label">氣象局實況</div><div class="condition-name" id="conditionName">正在取得實況</div></div>
+     <div><div class="condition-label">氣象局實況</div><div class="condition-name" id="conditionName">正在取得實況</div><div class="condition-desc" id="conditionDescription">正在讀取澳門氣象局資料。</div></div>
     </div>
     <div class="highlow"><span><span id="extremaLabel">預測</span>最高 <strong id="hi">—</strong>　最低 <strong id="lo">—</strong></span><span>體感評級 <strong id="feels">—</strong></span><span id="nightMessage">日間場景</span></div>
    </div>
@@ -228,7 +235,6 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
  <main class="main">
   <section class="container forecast-home" aria-labelledby="forecastTitle">
    <h2 id="forecastTitle">天氣預報</h2>
-   <div class="condition-desc" id="conditionDescription">正在讀取澳門氣象局資料。</div>
   <section class="sheet-section" id="hourly"><div class="section-header"><h3>逐小時預報</h3><span class="caption">Open-Meteo</span></div>
    <div class="panel hourly">
     <div class="hour-scroller"><div class="hour-frame"><div class="hour-grid" id="hourLabels"></div><div class="hour-grid" id="hourIcons"></div><div class="hour-grid" id="hourTemps"></div>
@@ -298,7 +304,7 @@ function syncSolar(){
  const state=solarState(new Date(),livePayload?.hourly?.solar||[]);
  night=state.night;daylight=state.daylight;golden=state.golden;app.dataset.night=String(night);
  $('nightMessage').textContent=night?'夜間':'日間';
- $('dateLabel').textContent=new Intl.DateTimeFormat('zh-HK',{timeZone:'Asia/Macau',month:'numeric',day:'numeric'}).format(new Date());
+ $('dateLabel').textContent=new Intl.DateTimeFormat('zh-Hant',{timeZone:'Asia/Macau',month:'long',day:'numeric'}).format(new Date());
  setTheme(map.get(current));if(!raf||motionPaused||reduce.matches)drawStill();
 }
 function seeded(n){let x=(n*747796405+2891336453)>>>0;x=((x>>>((x>>>28)+4))^x)*277803737>>>0;return ((x>>>22)^x)>>>0;}
@@ -331,7 +337,7 @@ let livePayload=null,liveFail=false;
 const liveStatus=document.querySelector('.update-line');
 function resetUnverified(){
  $('currentTemp').textContent='—';$('hi').textContent='—';$('lo').textContent='—';$('feels').textContent='—';
- $('humidity').textContent='—';$('wind').textContent='—';$('windDirection').textContent='未提供';
+ $('humidity').textContent='—';$('wind').textContent='—';$('windDirection').innerHTML='未提供';
  $('uv').textContent='—';$('aqi').textContent='—';$('aqiLevel').textContent='µg/m³';$('airStation').textContent='空氣資料暫未能取得';$('uvTime').textContent='紫外線資料暫未能取得';
  $('rainChance').textContent='—';
  $('hourLabels').innerHTML='<div style="grid-column:span 12;text-align:left;color:#60768a;font-size:15px;padding:26px 0">逐小時預報暫未能取得。</div>';
@@ -352,7 +358,7 @@ function renderHourly(hours){
  $('rainChance').innerHTML=Number.isFinite(hours[0].rainChance)?hours[0].rainChance+'<small>%</small>':'—';
 }
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-const fmtTime=v=>v&&!Number.isNaN(Date.parse(v))?new Intl.DateTimeFormat('zh-HK',{timeZone:'Asia/Macau',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(v)):'時間未提供';
+const fmtTime=v=>v&&!Number.isNaN(Date.parse(v))?new Intl.DateTimeFormat('zh-Hant',{timeZone:'Asia/Macau',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(v)):'時間未提供';
 const dated=(label,v)=>label+' '+fmtTime(v)+(v&&Date.now()-Date.parse(v)>90*60*1000?' · 可能過期':'');
 const reading=v=>Number.isFinite(v)?Number(v.toFixed(1)):'—';
 function table(head,rows){return '<table class="data-table"><thead><tr>'+head.map(h=>'<th scope="col">'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(row=>'<tr>'+row.map((v,i)=>i===0?'<th scope="row">'+esc(v)+'</th>':'<td>'+esc(v)+'</td>').join('')+'</tr>').join('')+'</tbody></table>';}
@@ -388,7 +394,13 @@ function applyLive(){
  $('currentTemp').textContent=t===null?'—':t;
  $('humidity').innerHTML=Number.isFinite(c.humidity)?esc(c.humidity)+'<small>%</small>':'—';
  $('wind').innerHTML=Number.isFinite(c.windSpeed)?esc(c.windSpeed)+'<small>km/h</small>':'—';
- $('windDirection').textContent=c.windDirection||'未提供';
+ const direction=c.windDirection||'';
+ const compass=['北','東北偏北','東北','東北偏東','東','東南偏東','東南','東南偏南',
+   '南','西南偏南','西南','西南偏西','西','西北偏西','西北','西北偏北'];
+ const directionIndex=compass.indexOf(direction.replace(/[風风]$/,''));
+ // The direction name identifies where the wind comes from; the arrow shows where it blows.
+ const arrow=directionIndex<0?'':`<span class="wind-arrow" aria-hidden="true" style="transform:rotate(${directionIndex*22.5+180}deg)">↑</span>`;
+ $('windDirection').innerHTML=arrow+esc(direction||'未提供');
  const macauDate=new Intl.DateTimeFormat('en-CA',{
    timeZone:'Asia/Macau',year:'numeric',month:'2-digit',day:'2-digit'
  }).format(new Date());
@@ -407,7 +419,7 @@ function applyLive(){
    $(id).title='當日'+label+caption+'溫 · '+macauDate;
  }
  $('feels').textContent=c.feelsLikeDescription||'—';
- $('conditionDescription').textContent=f.description||c.description||'官方天氣描述暫未能取得';
+ $('conditionDescription').textContent=[f.situation,f.description].filter(Boolean).join(' ')||'今日簡報暫未能取得';
  const guess=inferScene(c.description,c.weatherCode);
  renderHourly(d.hourly?.hours||[]);
  if(guess)pick(guess);else{pick('cloudy');app.dataset.condition='unknown';}
@@ -422,7 +434,7 @@ function applyLive(){
  else {$('weekDays').innerHTML='<div style="grid-column:span 7;padding:20px;text-align:left">官方七日預報暫時未能讀取。</div>';}
  const published=c.validFor||c.publishedAt;
  const stale=!published || Number.isNaN(Date.parse(published)) || Date.now()-Date.parse(published)>90*60*1000;
- const displayTime=v=>new Intl.DateTimeFormat('zh-HK',{timeZone:'Asia/Macau',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(v));
+ const displayTime=v=>new Intl.DateTimeFormat('zh-Hant',{timeZone:'Asia/Macau',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(v));
  liveStatus.textContent='實況 '+(published?displayTime(published):'未取得')+(stale?' · 實況可能過期':'')+(d.unavailable?.length?' · 部分資料暫缺':'');
  document.querySelector('.meta-label').textContent=stale?'實況暫缺或可能過期':'SMG 官方實況';
 }

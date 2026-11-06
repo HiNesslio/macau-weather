@@ -19,7 +19,7 @@ export function inferScene(text, code) {
   if(/有雨|降雨|雨天|下雨/.test(t))return 'rain';
   if(/薄霧/.test(t))return 'mist';if(/煙霞/.test(t))return 'haze';if(/霧/.test(t))return 'fog';
   if(/密雲|陰天|陰雲/.test(t))return 'overcast';
-  if(/間晴|部[分份]時間有陽光|部[分份]時間天晴|短暫時間有陽光/.test(t))return 'partly';
+  if(/間晴|部[分份]時間有陽光|部[分份]時間天晴|短暫時間有陽光|天晴[，,、\s]*部[分份]時間多雲/.test(t))return 'partly';
   if(/多雲/.test(t))return 'cloudy';
   if(/天晴|陽光充沛|晴朗/.test(t))return 'sunny';
   if(/狂風/.test(t))return 'gale';if(/大風|強風/.test(t))return 'wind';
