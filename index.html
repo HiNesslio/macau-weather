@@ -165,6 +165,13 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
 .condition-card .condition-desc { margin: 6px 0 0; font-size: 13px; }
 .wind-arrow { display: inline-block; margin-inline-end: 5px; }
 .condition-card .condition-name { font-size: 22px; margin-top: 2px; letter-spacing: 0; }
+
+/* Keep the sun/moon aligned to the weather hero, not the warning bulletin.
+   The CSS variable is refreshed when warnings change or the viewport resizes. */
+#atmosphere .celestial{top:var(--celestial-top,135px)}
+@media(max-width:720px){
+ #atmosphere .celestial{top:var(--celestial-top,167px)}
+}
 </style>
 <link rel="stylesheet" href="./assets/forecast-style.css">
 </head>
@@ -218,7 +225,7 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
     <div class="warning-summary"><span id="warningSummary" role="status">正在查詢氣象警告</span><a href="https://www.dsmg.gov.mo/zh-hant" target="_blank" rel="noopener noreferrer">氣象局 ↗</a></div>
     <div class="warning-cards" id="warningCards"></div><div id="weatherAdvisories" role="status" hidden></div><p class="warning-notice" id="warningNotice" hidden></p>
    </section>
-   <div class="hero-main">
+   <div class="hero-main" id="heroMain">
     <div class="location"><svg width="17" height="17"><use href="#i-pin"/></svg><span>澳門</span><span class="small-dot"></span><span id="dateLabel">—</span></div>
     <div class="temp" id="temperatureLine"><span id="currentTemp">—</span><span class="unit">°</span></div>
     <div class="condition-card">
@@ -341,6 +348,15 @@ function syncSolar(){
 function seeded(n){let x=(n*747796405+2891336453)>>>0;x=((x>>>((x>>>28)+4))^x)*277803737>>>0;return ((x>>>22)^x)>>>0;}
 function random(seed){return (seeded(seed)%100000)/100000;}
 function initParticles(){const s=map.get(current),rain=s.rain||0;const n=rain?Math.round(75+rain*65):(s.windy?100:(s.haze?100:(s.fog?65:42)));particles=Array.from({length:n},(_,i)=>({x:random(i*17+10)*canvasW,y:random(i*19+7)*canvasH,z:.55+random(i*23+11)*1.35,vel:.5+random(i*37+3)*1.25,len:12+random(i*43+8)*22,phase:random(i*31+5)*6.28}));stars=Array.from({length:65},(_,i)=>({x:random(i*5+9)*canvasW,y:random(i*7+12)*canvasH*.68,r:.4+random(i*13+17)*1.2,phase:random(i*29+15)*6.28}));}
+function syncCelestialPosition(){
+ // Measure the hero in document layout: warning cards can be any height,
+ // including long official bulletins or multiple simultaneous warnings.
+ const main=$('heroMain').getBoundingClientRect();
+ const hero=$('now').getBoundingClientRect();
+ if(!Number.isFinite(main.top)||!Number.isFinite(hero.top))return;
+ const offset=window.innerWidth<=720?60:25;
+ stage.style.setProperty('--celestial-top',Math.max(0,Math.round(main.top-hero.top+offset))+'px');
+}
 function sizeCanvas(){const rect=stage.getBoundingClientRect();canvasW=rect.width;canvasH=rect.height;dpr=Math.min(window.devicePixelRatio||1,window.innerWidth<680?1.45:1.8);canvas.width=Math.max(1,Math.round(canvasW*dpr));canvas.height=Math.max(1,Math.round(canvasH*dpr));if(ctx)ctx.setTransform(dpr,0,0,dpr,0,0);clouds.resize(canvasW,canvasH);initParticles();if(motionPaused||reduce.matches)drawStill()}
 function drawStars(g,t){g.save();for(const p of stars){const pulse=.46+.36*Math.sin(t*.3+p.phase);g.fillStyle=`rgba(245,251,255,${pulse})`;g.beginPath();g.arc(p.x,p.y,p.r,0,Math.PI*2);g.fill()}g.restore()}
 function drawFog(g,s,time){const density=s.fog||0;g.save();for(let i=0;i<6;i++){const y=canvasH*(.31+i*.105);const x=Math.sin(time*.15+i)*60;const rg=g.createLinearGradient(0,y-94,0,y+110);rg.addColorStop(0,'rgba(247,253,255,0)');rg.addColorStop(.5,`rgba(239,247,248,${.065+.057*density})`);rg.addColorStop(1,'rgba(244,249,250,0)');g.fillStyle=rg;g.fillRect(-100+x,y-94,canvasW+200,204)}g.restore()}
@@ -486,6 +502,7 @@ function renderWarnings(){
  if(advisoryRegion.textContent!==advisoryText)advisoryRegion.textContent=advisoryText;
  advisoryRegion.hidden=!advisories.length;
  app.classList.toggle('has-warning',view.mode==='active'||view.mode==='uncertain'||advisories.length>0);
+  syncCelestialPosition();
 }
 async function refreshWarnings(){
  if(warningBusy)return;warningBusy=true;if(warningPayload)renderWarnings();
@@ -508,11 +525,12 @@ function pick(id){
 }
 function toggleMotion(){motionPaused=!motionPaused;app.classList.toggle('motion-paused',motionPaused);$('motionBtn').setAttribute('aria-pressed',String(motionPaused));$('motionText').textContent=motionPaused?'播放動畫':'暫停動畫';$('motionIcon').setAttribute('href',motionPaused?'#i-play':'#i-pause');if(motionPaused){stop();drawStill()}else start()}
 function setup(){
- sizeCanvas();syncSolar();resetUnverified();refreshLive();refreshWarnings();setInterval(refreshLive,5*60*1000);setInterval(syncSolar,60*1000);setInterval(refreshWarnings,60*1000);
- $('motionBtn').addEventListener('click',toggleMotion);$('warningCards').addEventListener('error',e=>{if(e.target.tagName==='IMG')e.target.classList.add('image-failed')},true);
+ sizeCanvas();syncCelestialPosition();syncSolar();resetUnverified();refreshLive();refreshWarnings();setInterval(refreshLive,5*60*1000);setInterval(syncSolar,60*1000);setInterval(refreshWarnings,60*1000);
+ if('ResizeObserver' in window){const warningResizeObserver=new ResizeObserver(syncCelestialPosition);warningResizeObserver.observe($('warningRegion'));}
+  $('motionBtn').addEventListener('click',toggleMotion);$('warningCards').addEventListener('error',e=>{if(e.target.tagName==='IMG')e.target.classList.add('image-failed')},true);
  if(reduce.matches){app.classList.add('motion-paused');drawStill()}else start();
  if('IntersectionObserver'in window){const sceneObserver=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)start();else stop()},{threshold:0});sceneObserver.observe(stage);const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObserver.unobserve(e.target)}}),{threshold:.1});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el))}else document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
- document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else{syncSolar();refreshWarnings();start();}});window.addEventListener('resize',()=>{sizeCanvas();start()},{passive:true});if(reduce.addEventListener)reduce.addEventListener('change',e=>{if(e.matches){stop();drawStill();app.classList.add('motion-paused')}else{app.classList.toggle('motion-paused',motionPaused);start()}});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else{syncSolar();refreshWarnings();start();}});window.addEventListener('resize',()=>{sizeCanvas();syncCelestialPosition();start()},{passive:true});if(reduce.addEventListener)reduce.addEventListener('change',e=>{if(e.matches){stop();drawStill();app.classList.add('motion-paused')}else{app.classList.toggle('motion-paused',motionPaused);start()}});
  let scrollBusy=false;window.addEventListener('scroll',()=>{if(scrollBusy||reduce.matches)return;scrollBusy=true;requestAnimationFrame(()=>{scrollBusy=false;const p=Math.min(1,window.scrollY/500);const celestial=$('celestial');celestial.style.transform=`translate3d(0,${(-55*p).toFixed(1)}px,0) scale(${(1-.18*p).toFixed(3)})`;})},{passive:true});}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
 })();

@@ -12,8 +12,8 @@ function harness(responses,warningResponses=[]){
  const elements=new Map(),intervals=[];
  const gradient={addColorStop(){}};
  const context=new Proxy({}, {get:(_,key)=>key==='createLinearGradient'||key==='createRadialGradient'?()=>gradient:()=>{}});
- const make=id=>({id,dataset:{},style:{setProperty(){}},classList:{add(){},remove(){},toggle(){}},textContent:'',innerHTML:'',offsetWidth:100,
-  setAttribute(key,value){this[key]=value;},getContext(){return context;},getBoundingClientRect(){return {width:1280,height:730};},addEventListener(){}});
+ const make=id=>({id,dataset:{},style:{setProperty(key,value){this[key]=value;}},classList:{add(){},remove(){},toggle(){}},textContent:'',innerHTML:'',offsetWidth:100,
+  setAttribute(key,value){this[key]=value;},getContext(){return context;},getBoundingClientRect(){return {width:1280,height:730,top:this.mockTop??(this.id==='heroMain'?120:0)};},addEventListener(){}});
  const get=id=>{if(!elements.has(id))elements.set(id,make(id));return elements.get(id);};
  const events={};
  const document={readyState:'loading',hidden:false,getElementById:get,querySelector:get,querySelectorAll(){return [];},addEventListener(name,fn){events[name]=fn;}};
@@ -103,4 +103,20 @@ test('forecast cards have no legacy seven-column border and sunlight has illustr
  assert.match(html,/id="i-sunset"/);
  assert.match(html,/href="#i-sunrise"/);
  assert.match(html,/href="#i-sunset"/);
+});
+
+test('the celestial scene follows the hero below tall warning cards and returns when cleared',async()=>{
+ const active={key:'rainstorm',type:'暴雨',title:'紅色暴雨警告',active:true,status:1,severity:'severe',description:'測試用警告',link:'https://www.smg.gov.mo/'};
+ const h=harness([payload('天晴')],[{checkedAt:new Date().toISOString(),entries:[active]},{checkedAt:new Date().toISOString(),entries:[{...active,active:false,status:2}]}]);
+ await settle();
+ assert.match(html,/id="heroMain"/);
+ assert.match(html,/#atmosphere \.celestial\{top:var\(--celestial-top/);
+ assert.equal(h.get('atmosphere').style['--celestial-top'],'145px');
+ h.get('heroMain').mockTop=520;
+ await h.refreshWarnings();
+ assert.equal(h.get('atmosphere').style['--celestial-top'],'545px');
+ h.get('heroMain').mockTop=120;
+ // The next update or resize recomputes the position from layout rather than a hard-coded alert offset.
+ await h.refreshWarnings();
+ assert.equal(h.get('atmosphere').style['--celestial-top'],'145px');
 });

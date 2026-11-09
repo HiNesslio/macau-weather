@@ -114,3 +114,7 @@ npm run build
 ## 當日預測高低溫
 
 `dailyForecast` 直接使用 `https://xml.smg.gov.mo/c_7daysforecast.xml` 中 `ValidFor` 等於澳門當日日期的一筆資料，依 `Temperature/Type` 的 1／2 取得最高／最低。不以第一筆資料位置或其他日期代替。原有 `current.high`／`low` 欄位同步回傳這組預測值，並以 `current.extrema.kind = forecast_daily` 標明語義；原簡報的實測高低溫另存 `observedHigh`／`observedLow`，兩者不混用。
+
+## 天氣警告與太陽／月亮定位
+
+天體保持在 `#atmosphere` 的 Canvas 雲層之下，以免改變前後遮擋關係；但不再固定於距離畫面頂部的像素位置。`syncCelestialPosition` 以 `#heroMain` 與 `#now` 的 `getBoundingClientRect()` 差值計算天體頂部，隨警告卡片高度、同時生效多項警告、視窗寬度及字型換行而更新。警告狀態變更、視窗縮放與警告區尺寸改變時同步更新。無 JavaScript 時維持原有靜態位置作 fallback。
