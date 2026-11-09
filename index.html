@@ -166,11 +166,33 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
 .wind-arrow { display: inline-block; margin-inline-end: 5px; }
 .condition-card .condition-name { font-size: 22px; margin-top: 2px; letter-spacing: 0; }
 
-/* Keep the sun/moon aligned to the weather hero, not the warning bulletin.
-   The CSS variable is refreshed when warnings change or the viewport resizes. */
-#atmosphere .celestial{top:var(--celestial-top,135px)}
+/* Sun / moon, atmospheric glow and rotating rays share one physical anchor.
+   The group follows the hero as warnings change its vertical position. */
+#atmosphere .celestial-system{
+ position:absolute;z-index:1;top:var(--celestial-top,135px);
+ right:13%;width:195px;aspect-ratio:1;pointer-events:none;
+ --glow-size:min(75vw,920px);--glow-radius:min(37.5vw,460px);
+ --ray-size:650px;--ray-radius:325px;
+ transition:top .45s ease;
+}
+#atmosphere .celestial-system .celestial{
+ top:0;right:0;width:100%;height:100%;
+}
+#atmosphere .celestial-system .sky-glow{
+ top:calc(50% - var(--glow-radius));left:calc(50% - var(--glow-radius));
+ right:auto;width:var(--glow-size);height:var(--glow-size);
+}
+#atmosphere .celestial-system .rays{
+ top:calc(50% - var(--ray-radius));left:calc(50% - var(--ray-radius));
+ right:auto;width:var(--ray-size);height:var(--ray-size);
+}
+@media(max-width:980px){#atmosphere .celestial-system{right:8%}}
 @media(max-width:720px){
- #atmosphere .celestial{top:var(--celestial-top,167px)}
+ #atmosphere .celestial-system{
+  top:var(--celestial-top,167px);right:7%;width:114px;
+  --glow-size:600px;--glow-radius:300px;
+  --ray-size:520px;--ray-radius:260px;
+ }
 }
 </style>
 <link rel="stylesheet" href="./assets/forecast-style.css">
@@ -218,7 +240,7 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
 </svg>
 <div class="weather-shell" id="weatherApp" data-condition="unknown" data-night="false">
  <section class="hero" id="now">
-  <div class="atmosphere" id="atmosphere" aria-hidden="true"><div class="sky-glow"></div><div class="rays"></div><div class="celestial" id="celestial"></div><canvas id="skyCanvas"></canvas><div class="flash-overlay" id="flashOverlay"></div></div>
+  <div class="atmosphere" id="atmosphere" aria-hidden="true"><div class="celestial-system" id="celestialSystem"><div class="sky-glow"></div><div class="rays"></div><div class="celestial" id="celestial"></div></div><canvas id="skyCanvas"></canvas><div class="flash-overlay" id="flashOverlay"></div></div>
   <div class="container">
    <header class="nav"><a class="wordmark" href="#now" aria-label="澳門天氣，返回頁首"><span class="wordmark-mark"></span>澳門天氣 <small>MACAU WEATHER</small></a><div class="nav-actions"><a class="github-link" href="https://github.com/HiNesslio/macau-weather" target="_blank" rel="noopener noreferrer" aria-label="在 GitHub 查看澳門天氣開源專案（MIT 授權）"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.16 1.73 1.16 1 1.72 2.62 1.22 3.26.94.1-.73.39-1.22.71-1.5-2.5-.28-5.13-1.25-5.13-5.57 0-1.23.44-2.24 1.16-3.03-.12-.28-.5-1.43.11-2.99 0 0 .95-.3 3.08 1.15a10.7 10.7 0 0 1 5.61 0c2.13-1.44 3.08-1.15 3.08-1.15.61 1.56.23 2.71.11 2.99.72.79 1.16 1.8 1.16 3.03 0 4.33-2.64 5.28-5.15 5.56.4.35.76 1.03.76 2.08v3.1c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg><span>GitHub<span class="open-source-copy"> 開源</span></span></a><div class="meta-label">正在更新 · SMG</div></div></header>
    <section class="warning-region" id="warningRegion" aria-label="氣象警告" data-mode="loading">
@@ -531,7 +553,7 @@ function setup(){
  if(reduce.matches){app.classList.add('motion-paused');drawStill()}else start();
  if('IntersectionObserver'in window){const sceneObserver=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)start();else stop()},{threshold:0});sceneObserver.observe(stage);const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObserver.unobserve(e.target)}}),{threshold:.1});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el))}else document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else{syncSolar();refreshWarnings();start();}});window.addEventListener('resize',()=>{sizeCanvas();syncCelestialPosition();start()},{passive:true});if(reduce.addEventListener)reduce.addEventListener('change',e=>{if(e.matches){stop();drawStill();app.classList.add('motion-paused')}else{app.classList.toggle('motion-paused',motionPaused);start()}});
- let scrollBusy=false;window.addEventListener('scroll',()=>{if(scrollBusy||reduce.matches)return;scrollBusy=true;requestAnimationFrame(()=>{scrollBusy=false;const p=Math.min(1,window.scrollY/500);const celestial=$('celestial');celestial.style.transform=`translate3d(0,${(-55*p).toFixed(1)}px,0) scale(${(1-.18*p).toFixed(3)})`;})},{passive:true});}
+ let scrollBusy=false;window.addEventListener('scroll',()=>{if(scrollBusy||reduce.matches)return;scrollBusy=true;requestAnimationFrame(()=>{scrollBusy=false;const p=Math.min(1,window.scrollY/500);const celestial=$('celestialSystem');celestial.style.transform=`translate3d(0,${(-55*p).toFixed(1)}px,0) scale(${(1-.18*p).toFixed(3)})`;})},{passive:true});}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
 })();
 </script>

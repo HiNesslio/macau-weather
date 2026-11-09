@@ -118,3 +118,7 @@ npm run build
 ## 天氣警告與太陽／月亮定位
 
 天體保持在 `#atmosphere` 的 Canvas 雲層之下，以免改變前後遮擋關係；但不再固定於距離畫面頂部的像素位置。`syncCelestialPosition` 以 `#heroMain` 與 `#now` 的 `getBoundingClientRect()` 差值計算天體頂部，隨警告卡片高度、同時生效多項警告、視窗寬度及字型換行而更新。警告狀態變更、視窗縮放與警告區尺寸改變時同步更新。無 JavaScript 時維持原有靜態位置作 fallback。
+
+### 天體視覺效果同步
+
+`#celestialSystem` 是共同的絕對定位容器，包含 `.celestial`（太陽／月亮）、`.sky-glow`（光暈）和 `.rays`（旋轉光芒）。警告卡片改變高度時，只需更新容器的 `--celestial-top`；光暈與光芒各自相對容器中心佈局（手機使用 600px 光暈、520px 光芒，桌面維持原先大小）。捲動視差亦移到容器，不再只移動天體造成光暈錯位，保留原先日夜和天氣透明度效果。

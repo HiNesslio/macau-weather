@@ -110,7 +110,7 @@ test('the celestial scene follows the hero below tall warning cards and returns 
  const h=harness([payload('天晴')],[{checkedAt:new Date().toISOString(),entries:[active]},{checkedAt:new Date().toISOString(),entries:[{...active,active:false,status:2}]}]);
  await settle();
  assert.match(html,/id="heroMain"/);
- assert.match(html,/#atmosphere \.celestial\{top:var\(--celestial-top/);
+ assert.match(html,/#atmosphere \.celestial-system\{/);
  assert.equal(h.get('atmosphere').style['--celestial-top'],'145px');
  h.get('heroMain').mockTop=520;
  await h.refreshWarnings();
@@ -119,4 +119,20 @@ test('the celestial scene follows the hero below tall warning cards and returns 
  // The next update or resize recomputes the position from layout rather than a hard-coded alert offset.
  await h.refreshWarnings();
  assert.equal(h.get('atmosphere').style['--celestial-top'],'145px');
+});
+
+test('sun and moon stay centred in the same animated layer as glow and rays',()=>{
+ const markup=html.match(/<div class="atmosphere" id="atmosphere"[^>]*>(.*?)<canvas id="skyCanvas"/);
+ assert.ok(markup,'atmosphere markup exists');
+ assert.match(markup[1],/id="celestialSystem"/);
+ assert.match(markup[1],/class="sky-glow"/);
+ assert.match(markup[1],/class="rays"/);
+ assert.match(markup[1],/id="celestial"/);
+ assert.match(html,/#atmosphere \.celestial-system \.sky-glow\{/);
+ assert.match(html,/#atmosphere \.celestial-system \.rays\{/);
+ assert.match(html,/left:calc\(50% - var\(--glow-radius\)\)/);
+ assert.match(html,/left:calc\(50% - var\(--ray-radius\)\)/);
+ assert.match(html,/const celestial=\$\('celestialSystem'\);celestial\.style\.transform/);
+ assert.doesNotMatch(html,/const celestial=\$\('celestial'\);celestial\.style\.transform/);
+ assert.match(html,/--glow-size:600px;--glow-radius:300px/);
 });
