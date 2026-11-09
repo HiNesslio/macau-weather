@@ -166,6 +166,7 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
 .wind-arrow { display: inline-block; margin-inline-end: 5px; }
 .condition-card .condition-name { font-size: 22px; margin-top: 2px; letter-spacing: 0; }
 </style>
+<link rel="stylesheet" href="./assets/forecast-style.css">
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
@@ -241,7 +242,18 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
      <svg viewBox="0 0 960 66" preserveAspectRatio="none" class="hour-chart" aria-hidden="true"><defs><linearGradient id="hourGrad" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#b1d6ed" stop-opacity=".44"/><stop offset="1" stop-color="#b1d6ed" stop-opacity="0"/></linearGradient></defs><path id="hourArea" class="area"/><path id="hourLine" class="line"/><g id="hourDots"></g></svg>
      <div class="hour-bottom"><strong>降雨機率</strong></div><div class="rain-grid" id="hourRains"></div></div></div>
    </div></section>
-  <section class="sheet-section" id="week"><div class="section-header"><h3>七日預報</h3><span class="caption">澳門氣象局</span></div><div><div class="panel week-panel"><div class="week-scroller"><div class="week-days" id="weekDays"></div></div></div></div></section>
+  <section class="sheet-section" id="week">
+    <div class="section-header"><h3>七日預報</h3><span class="caption">澳門氣象局 · 預測高低溫</span></div>
+    <div class="panel week-panel"><div class="week-scroller"><div class="week-days" id="weekDays" aria-label="七日溫度區間"></div></div></div>
+   </section>
+   <section class="sheet-section" id="sun-times">
+    <div class="section-header"><h3>日出與日落</h3><span class="caption">Open-Meteo · 澳門時間</span></div>
+    <div class="panel solar-panel">
+     <div class="solar-time-col"><div class="solar-label">日出</div><div class="solar-time" id="sunriseTime">—</div></div>
+     <div class="solar-center"><div class="solar-track" id="solarTrack" style="--sun-progress:0%" role="img" aria-label="日照進度"><span class="solar-fill"></span><span class="solar-dot"></span></div><div class="solar-status" id="solarStatus">暫未能取得</div></div>
+     <div class="solar-time-col"><div class="solar-label">日落</div><div class="solar-time" id="sunsetTime">—</div></div>
+    </div>
+   </section>
 
   </section>
   <dialog class="weather-sheet" id="environmentSheet" aria-labelledby="environmentSheetTitle">
@@ -262,6 +274,7 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
 <script type="module" src="./assets/weather-sheets.js"></script>
 <script type="module">
 import { inferScene, solarState } from './assets/weather-state.js';
+import { renderForecastRows, getSolarTimes } from './assets/forecast-view.js';
 import { CloudRenderer } from './assets/cloud-renderer.js';
 import { warningView, mergeWarnings } from './assets/warning-view.js';
 (()=>{'use strict';
@@ -305,7 +318,11 @@ function syncSolar(){
  night=state.night;daylight=state.daylight;golden=state.golden;app.dataset.night=String(night);
  $('nightMessage').textContent=night?'夜間':'日間';
  $('dateLabel').textContent=new Intl.DateTimeFormat('zh-Hant',{timeZone:'Asia/Macau',month:'long',day:'numeric'}).format(new Date());
- setTheme(map.get(current));if(!raf||motionPaused||reduce.matches)drawStill();
+ const sun=getSolarTimes(livePayload?.hourly?.solar||[],new Date());
+  $('sunriseTime').textContent=sun.sunrise;$('sunsetTime').textContent=sun.sunset;
+  $('solarStatus').textContent=sun.status;$('solarTrack').style.setProperty('--sun-progress',sun.progress.toFixed(2)+'%');
+  $('solarTrack').setAttribute('aria-label',sun.available?'日照進度 '+Math.round(sun.progress)+'%':'日照進度暫缺');
+  setTheme(map.get(current));if(!raf||motionPaused||reduce.matches)drawStill();
 }
 function seeded(n){let x=(n*747796405+2891336453)>>>0;x=((x>>>((x>>>28)+4))^x)*277803737>>>0;return ((x>>>22)^x)>>>0;}
 function random(seed){return (seeded(seed)%100000)/100000;}
@@ -428,11 +445,8 @@ function applyLive(){
  if(scene)$('conditionIconUse').setAttribute('href','#i-'+scene.icon);
  $('conditionName').textContent=c.description||scene?.name||'實況暫缺';
  syncSolar();renderEnvironment(d);
- const forecasts=d.sevenDays?.days||[];
- if(forecasts.length){$('weekDays').innerHTML=forecasts.map((v,i)=>`<div class="day"><div class="day-title">${esc(v.date.slice(5).replace('-','/'))}</div>${svg(map.get(inferScene(v.description,v.weatherCode))?.icon||'cloud',35)}<div class="day-temp">${Number.isFinite(v.high)?esc(v.high)+'°':'—'} <span>${Number.isFinite(v.low)?esc(v.low)+'°':'—'}</span></div><div class="day-rain" title="${esc(v.description)}">濕度 ${esc(v.humidity||'—')}</div><div style="font-size:12px;line-height:1.6;margin-top:8px">${esc(v.description.split('。')[0])}</div></div>`).join('');}
- else if(d.sevenDays?.text){$('weekDays').innerHTML='<div style="grid-column:span 7;text-align:left;padding:20px;line-height:1.9;font-size:14px;color:#3d576d">'+esc(d.sevenDays.text)+'</div>';}
- else {$('weekDays').innerHTML='<div style="grid-column:span 7;padding:20px;text-align:left">官方七日預報暫時未能讀取。</div>';}
- const published=c.validFor||c.publishedAt;
+ $('weekDays').innerHTML=renderForecastRows(d.sevenDays?.days||[],macauDate,t,v=>svg(map.get(inferScene(v.description,v.weatherCode))?.icon||'cloud',35));
+  const published=c.validFor||c.publishedAt;
  const stale=!published || Number.isNaN(Date.parse(published)) || Date.now()-Date.parse(published)>90*60*1000;
  const displayTime=v=>new Intl.DateTimeFormat('zh-Hant',{timeZone:'Asia/Macau',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(v));
  liveStatus.textContent='實況 '+(published?displayTime(published):'未取得')+(stale?' · 實況可能過期':'')+(d.unavailable?.length?' · 部分資料暫缺':'');

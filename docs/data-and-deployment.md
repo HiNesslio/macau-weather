@@ -98,6 +98,12 @@ npm run build
 
 30 項測試包含新增的警告生效／取消／預告、黃紅黑雨級別、官方圖示網址、部分來源失敗、舊警告確認失敗和獨立警告更新。桌面 1280px、手機 390px 已檢查；無警告時四項即時詳情全部位於手機首屏。`docs/screenshots/warning-scenario-mobile.jpg` 為明確標記的本機測試情境，並非真實警告；正式網站只讀官方實際狀態。
 
+## 七日溫度區間與日出日落
+
+七日預報改為逐日列表，每日溫度區間條均使用七日預測值的全局最低／最高溫作共同刻度。當日有有效實測氣溫且落於當日預測範圍內時，顯示目前氣溫圓點。官方濕度及文字描述保留；未有將濕度當作降雨機率。資料不可用時顯示「—」。
+
+日出日落使用現有 Open-Meteo `hourly.solar` 資料（`daily=sunrise,sunset`），按照澳門日期選取並以 `Asia/Macau` 24 小時制顯示。進度條顯示日照進程與日出前、日落後狀態。若來源失效，標記資料暫缺，不把天空動畫的估算日照混作官方時間。
+
 ## 當日預測高低溫
 
 `dailyForecast` 直接使用 `https://xml.smg.gov.mo/c_7daysforecast.xml` 中 `ValidFor` 等於澳門當日日期的一筆資料，依 `Temperature/Type` 的 1／2 取得最高／最低。不以第一筆資料位置或其他日期代替。原有 `current.high`／`low` 欄位同步回傳這組預測值，並以 `current.extrema.kind = forecast_daily` 標明語義；原簡報的實測高低溫另存 `observedHigh`／`observedLow`，兩者不混用。

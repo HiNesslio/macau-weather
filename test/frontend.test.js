@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { runInNewContext } from 'node:vm';
 import { inferScene, solarState } from '../assets/weather-state.js';
+import { renderForecastRows, getSolarTimes } from '../assets/forecast-view.js';
 import { warningView, mergeWarnings } from '../assets/warning-view.js';
 const html=await readFile(new URL('../index.html',import.meta.url),'utf8');
 const code=html.match(/<script type="module">([\s\S]*?)<\/script>/)[1].replace(/^import .*;$/gm,'');
@@ -17,7 +18,7 @@ function harness(responses,warningResponses=[]){
  const events={};
  const document={readyState:'loading',hidden:false,getElementById:get,querySelector:get,querySelectorAll(){return [];},addEventListener(name,fn){events[name]=fn;}};
  const window={innerWidth:1280,devicePixelRatio:1,matchMedia(){return {matches:false,addEventListener(){}};},addEventListener(){}};
- const globals={document,window,inferScene,solarState,warningView,mergeWarnings,CloudRenderer:class{resize(){}draw(){}},Intl,Date,URL,AbortSignal,performance,
+ const globals={document,window,inferScene,solarState,renderForecastRows,getSolarTimes,warningView,mergeWarnings,CloudRenderer:class{resize(){}draw(){}},Intl,Date,URL,AbortSignal,performance,
   requestAnimationFrame(){return 1;},cancelAnimationFrame(){},setInterval(fn,ms){intervals.push({fn,ms});},
   async fetch(url){const next=url==='/api/warnings'?(warningResponses.shift()||{checkedAt:new Date().toISOString(),entries:[{key:'typhoon',active:false,status:0},{key:'rainstorm',active:false,status:0}]}):responses.shift();if(next instanceof Error)throw next;return {ok:true,json:async()=>next};}};
  runInNewContext(code,globals);events.DOMContentLoaded();
@@ -45,4 +46,34 @@ test('separate warning updates remain prominent even when weather fails; cancell
  const h=harness([new Error('weather offline')],[{checkedAt:new Date().toISOString(),entries:[active]},{checkedAt:new Date().toISOString(),entries:[{...active,active:false,status:2}]}]);await settle();
  assert.equal(h.get('warningRegion').dataset.mode,'active');assert.match(h.get('warningCards').innerHTML,/八號東北風球/);
  await h.refreshWarnings();assert.equal(h.get('warningRegion').dataset.mode,'clear');assert.equal(h.get('warningCards').innerHTML,'');
+});
+
+test('shared-scale seven-day forecast keeps accurate ranges and official metadata',()=>{
+ const html=renderForecastRows([
+  {date:'2026-11-09',low:22,high:26,description:'間中有陽光',humidity:'55–75%'},
+  {date:'2026-11-10',low:16,high:21,description:'多雲',humidity:'65–95%'}
+ ],'2026-11-09',26,()=>'<svg></svg>');
+ assert.match(html,/left:60\.00%;width:40\.00%/);
+ assert.match(html,/left:0\.00%;width:50\.00%/);
+ assert.match(html,/目前氣溫 26°/);
+ assert.match(html,/間中有陽光/);
+ assert.match(html,/濕度 55–75%/);
+});
+test('sun times are formatted for Macau and absent values are never fabricated',()=>{
+ const now=new Date('2026-11-09T12:00:00+08:00');
+ const sunrise=Date.parse('2026-11-09T06:15:00+08:00')/1000;
+ const sunset=Date.parse('2026-11-09T17:45:00+08:00')/1000;
+ const result=getSolarTimes([{sunrise,sunset}],now);
+ assert.equal(result.sunrise,'06:15');assert.equal(result.sunset,'17:45');
+ assert.ok(result.progress>0&&result.progress<100);
+ assert.equal(getSolarTimes([],now).sunrise,'—');
+ assert.equal(getSolarTimes([{sunrise,sunset}],new Date('2026-11-10T12:00:00+08:00')).available,false);
+});
+test('frontend displays live SMG temperature tracks and the connected solar panel',async()=>{
+ const date=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Macau',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+ const sunrise=Date.parse(date+'T06:15:00+08:00')/1000,sunset=Date.parse(date+'T17:45:00+08:00')/1000;
+ const h=harness([{...payload('天晴'),sevenDays:{days:[{date,low:22,high:28,description:'間中有陽光',humidity:'55–75%'}]},hourly:{hours:[],solar:[{sunrise,sunset}]}}]);await settle();
+ assert.match(h.get('weekDays').innerHTML,/day-range-fill/);
+ assert.equal(h.get('sunriseTime').textContent,'06:15');
+ assert.equal(h.get('sunsetTime').textContent,'17:45');
 });
