@@ -1,16 +1,58 @@
-/* Seven-day forecast: every range shares the same minimum/maximum temperature scale. */
-.week-panel{padding:9px 25px;overflow:visible}.week-scroller{overflow:visible}.week-days{display:flex;flex-direction:column;min-width:0}
-.day{display:grid;grid-template-columns:68px minmax(135px,1fr) 46px minmax(90px,1.4fr) 46px;gap:14px;align-items:center;min-height:80px;padding:12px 0;border-right:0;border-bottom:1px solid #eaf0f4}
-.day:last-child{border:0}.day-title{display:flex;flex-direction:column;gap:2px;line-height:1.3;color:#29475e}.day-title strong{font-size:15px;font-weight:650}.day-title small{font-size:11px;color:#96a6b2}
-.day[data-today="true"] .day-title strong{color:#227cae}.day-weather{display:flex;align-items:center;gap:10px;min-width:0}.day-weather svg{flex:none;width:35px;height:35px}
-.day-weather-copy{min-width:0}.day-description{color:#476579;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.day-humidity{font-size:11px;color:#8fa3b3}
-.day-min,.day-max{font-size:19px;font-weight:570;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-align:center}.day-min{color:#95aabb}.day-max{color:#29465c}
-.day-range{position:relative;height:8px;background:#e6eef4;border-radius:99px;min-width:0}.day-range-fill{position:absolute;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,#84b5d7,#e6cf77 53%,#f3a24e)}
-.day-current{position:absolute;top:50%;height:13px;width:13px;transform:translate(-50%,-50%);border:3px solid #fff;border-radius:50%;background:#f4a44c;box-shadow:0 1px 5px #637e8e66}
-.week-empty{padding:26px 8px;color:#708699;font-size:14px}
-.solar-panel{padding:23px 26px;display:grid;grid-template-columns:minmax(80px,1fr) minmax(145px,2.1fr) minmax(80px,1fr);gap:19px;align-items:center}
-.solar-time-col:last-child{text-align:right}.solar-label{font-size:12px;color:#8299aa}.solar-time{font-size:29px;letter-spacing:-.045em;font-weight:570;font-variant-numeric:tabular-nums;margin-top:4px}
-.solar-track{height:7px;position:relative;background:#e6edf3;border-radius:99px;margin:4px 0 11px}.solar-fill{position:absolute;inset:0 auto 0 0;width:var(--sun-progress,0%);border-radius:99px;background:linear-gradient(90deg,#eccd86,#f3a750)}
-.solar-dot{position:absolute;top:50%;left:var(--sun-progress,0%);width:15px;height:15px;border:3px solid white;border-radius:50%;background:#f3af58;box-shadow:0 1px 5px #d7a76680;transform:translate(-50%,-50%)}.solar-status{text-align:center;font-size:11px;color:#8397a8}
-@media(max-width:720px){.week-panel{padding:7px 15px}.day{grid-template-columns:53px 38px 35px minmax(55px,1fr) 35px;gap:7px;min-height:70px;padding:11px 0}.day-title strong{font-size:14px}.day-title small{font-size:10px}.day-weather{justify-content:center}.day-weather svg{width:32px;height:32px}.day-weather-copy{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.day-min,.day-max{font-size:17px}.solar-panel{padding:20px 17px;grid-template-columns:80px minmax(66px,1fr) 80px;gap:7px}.solar-time{font-size:22px}.solar-label{font-size:11px}}
-@media(max-width:360px){.week-panel{padding:6px 12px}.day{grid-template-columns:46px 31px 32px minmax(45px,1fr) 32px;gap:6px}.day-min,.day-max{font-size:16px}.solar-panel{grid-template-columns:70px minmax(60px,1fr) 70px}.solar-time{font-size:20px}}
+/* Seven-day forecast: a single vertical list with one shared temperature scale. */
+.week-panel{padding:8px 25px;overflow:hidden}
+.week-scroller{overflow:visible}
+.week-days{display:flex;flex-direction:column;min-width:0}
+.week-days .day{
+ min-width:0;display:grid;grid-template-columns:72px 46px 48px minmax(0,1fr) 48px;
+ align-items:center;column-gap:15px;row-gap:3px;padding:19px 0 17px;margin:0;
+ border:0;border-bottom:1px solid #e8eef3;border-radius:0;
+}
+.week-days .day:last-child{border:0}
+.day-title{grid-column:1;grid-row:1 / span 2;display:flex;flex-direction:column;gap:1px;line-height:1.3;color:#2b475c}
+.day-title strong{font-size:15px;font-weight:650;letter-spacing:-.025em}
+.day-title small{font-size:11px;font-weight:450;color:#98a8b4}
+.day[data-today="true"] .day-title strong{color:#297eaf}
+.day-icon{grid-column:2;grid-row:1;display:flex;justify-content:center;align-items:center}
+.day-icon svg{flex:none;width:35px;height:35px}
+.day-min,.day-max{font-size:20px;font-weight:590;line-height:1.3;text-align:center;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.day-min{grid-column:3;grid-row:1;color:#96abbc}
+.day-max{grid-column:5;grid-row:1;color:#29465c}
+.day-range{grid-column:4;grid-row:1;height:8px;position:relative;min-width:0;background:#e6edf3;border-radius:99px}
+.day-range-fill{position:absolute;top:0;bottom:0;border-radius:99px}
+.day-current{position:absolute;top:50%;width:13px;height:13px;transform:translate(-50%,-50%);border:3px solid #fff;border-radius:50%;background:#efa44e;box-shadow:0 1px 6px #637e8e66}
+.day-briefing{grid-column:2 / -1;grid-row:2;display:flex;align-items:baseline;flex-wrap:wrap;column-gap:12px;row-gap:1px;min-width:0;font-size:12px;line-height:1.5;color:#667e8f}
+.day-description{min-width:0;overflow-wrap:anywhere;white-space:normal}
+.day-humidity{flex-shrink:0;color:#8ea0ae;font-size:11px}
+.week-empty{padding:25px 6px;color:#718699;font-size:14px;line-height:1.6}
+/* Sun position: same soft, illustrated icon language as the weather conditions. */
+.solar-panel{display:grid;grid-template-columns:minmax(85px,1fr) minmax(135px,2.1fr) minmax(85px,1fr);gap:20px;align-items:center;padding:24px 27px}
+.solar-time-col:last-child{text-align:right}
+.solar-label{display:flex;align-items:center;gap:8px;color:#8196a6;font-size:12px;white-space:nowrap}
+.solar-time-col:last-child .solar-label{justify-content:flex-end}
+.solar-label svg{width:26px;height:26px;flex:none}
+.solar-time{margin-top:6px;font-size:29px;font-weight:570;line-height:1.3;letter-spacing:-.045em;font-variant-numeric:tabular-nums;color:#27485f}
+.solar-track{position:relative;height:7px;border-radius:99px;background:#e5edf3;margin:4px 0 11px}
+.solar-fill{position:absolute;top:0;bottom:0;left:0;width:var(--sun-progress,0%);border-radius:inherit;background:linear-gradient(90deg,#edcb81,#f2a34d)}
+.solar-dot{position:absolute;top:50%;left:var(--sun-progress,0%);width:15px;height:15px;border:3px solid #fff;border-radius:50%;background:#f4b05a;box-shadow:0 1px 5px #d7a76680;transform:translate(-50%,-50%)}
+.solar-status{font-size:11px;color:#8397a8;text-align:center}
+@media(max-width:720px){
+ .week-panel{padding:5px 17px}
+ .week-days .day{grid-template-columns:51px 34px 36px minmax(0,1fr) 36px;column-gap:8px;row-gap:6px;min-height:82px;padding:14px 0}
+ .day-title strong{font-size:14px}.day-title small{font-size:10px}
+ .day-icon svg{width:33px;height:33px}
+ .day-min,.day-max{font-size:17px}
+ .day-briefing{grid-column:2 / -1;font-size:11px;line-height:1.5}
+ .day-humidity{font-size:10px}
+ .solar-panel{padding:22px 17px;grid-template-columns:82px minmax(62px,1fr) 82px;gap:8px}
+ .solar-label{gap:4px;font-size:11px}.solar-label svg{width:22px;height:22px}
+ .solar-time{font-size:22px}
+}
+@media(max-width:360px){
+ .week-panel{padding:4px 12px}
+ .week-days .day{grid-template-columns:46px 30px 31px minmax(0,1fr) 31px;column-gap:6px}
+ .day-min,.day-max{font-size:16px}
+ .day-briefing{grid-column:1 / -1}
+ .solar-panel{grid-template-columns:72px minmax(55px,1fr) 72px;padding:20px 12px}
+ .solar-label svg{width:20px;height:20px}
+ .solar-time{font-size:20px}
+}

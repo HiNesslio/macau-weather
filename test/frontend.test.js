@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { runInNewContext } from 'node:vm';
 import { inferScene, solarState } from '../assets/weather-state.js';
-import { renderForecastRows, getSolarTimes } from '../assets/forecast-view.js';
+import { renderForecastRows, getSolarTimes, temperatureColor, temperatureRangeGradient } from '../assets/forecast-view.js';
 import { warningView, mergeWarnings } from '../assets/warning-view.js';
 const html=await readFile(new URL('../index.html',import.meta.url),'utf8');
 const code=html.match(/<script type="module">([\s\S]*?)<\/script>/)[1].replace(/^import .*;$/gm,'');
@@ -76,4 +76,31 @@ test('frontend displays live SMG temperature tracks and the connected solar pane
  assert.match(h.get('weekDays').innerHTML,/day-range-fill/);
  assert.equal(h.get('sunriseTime').textContent,'06:15');
  assert.equal(h.get('sunsetTime').textContent,'17:45');
+});
+
+test('colour uses absolute Celsius: hot-only ranges have no cold blue',()=>{
+ assert.equal(temperatureColor(28),'#f1ad4f');
+ assert.equal(temperatureRangeGradient(28,30).startsWith('linear-gradient(90deg,#f1ad4f 0.00%'),true);
+ const hot=renderForecastRows([{date:'2026-11-10',low:28,high:32,description:'炎熱'}],'2026-11-09');
+ assert.match(hot,/background:linear-gradient\(90deg,#f1ad4f 0\.00%/);
+ assert.doesNotMatch(hot,/#84b5d7|#78bfe9|#86bfe0/);
+ const cold=renderForecastRows([{date:'2026-11-10',low:12,high:16,description:'清涼'}],'2026-11-09');
+ assert.match(cold,/background:linear-gradient\(90deg,#/);
+ assert.notEqual(temperatureColor(12),temperatureColor(28));
+});
+test('daily SMG forecast briefing remains visible in the row including humidity',()=>{
+ const forecast='日間大致多雲，稍後部分時間有陽光。晚間有幾陣驟雨。';
+ const html=renderForecastRows([{date:'2026-11-09',low:20,high:28,description:forecast,humidity:'60–85%'}],'2026-11-09',25,()=>'<svg></svg>');
+ assert.match(html,/class="day-briefing"/);
+ assert.match(html,/日間大致多雲，稍後部分時間有陽光/);
+ assert.match(html,/晚間有幾陣驟雨/);
+ assert.match(html,/相對濕度 60–85%/);
+ assert.match(html,/class="day-icon"/);
+});
+test('forecast cards have no legacy seven-column border and sunlight has illustrated icons',()=>{
+ assert.doesNotMatch(html,/border-right:1px solid #ebf0f4/);
+ assert.match(html,/id="i-sunrise"/);
+ assert.match(html,/id="i-sunset"/);
+ assert.match(html,/href="#i-sunrise"/);
+ assert.match(html,/href="#i-sunset"/);
 });

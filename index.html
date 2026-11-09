@@ -54,7 +54,7 @@
 .panel{background:white;border:1px solid var(--stroke);border-radius:var(--rounded);box-shadow:0 15px 50px rgba(34,65,89,.027),0 2px 9px rgba(27,54,72,.015)}
 .hourly{padding:29px 29px 25px}.panel-header{display:flex;align-items:center;justify-content:space-between;gap:15px;font-size:13px;font-weight:670}.panel-header .hint{font-size:12px;color:#95a2ad;font-weight:470}.hour-scroller{overflow-x:auto;scrollbar-width:thin;scrollbar-color:#dfe8ef transparent;margin-top:24px;padding-bottom:2px}.hour-frame{min-width:890px}.hour-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));text-align:center}.hour-label{font-size:12px;color:#96a4ae;font-weight:530}.hour-label:first-child{color:#1c465f;font-weight:730}.hour-icon{display:flex;align-items:center;justify-content:center;height:48px;margin-top:12px}.hour-icon svg{width:30px;height:30px}.hour-temp{font-size:17px;color:#2b455b;font-weight:680;margin:7px 0 6px;letter-spacing:-.04em}.hour-chart{height:66px;width:100%;overflow:visible;display:block;margin-top:0}.hour-chart .line{fill:none;stroke:#6eafd6;stroke-width:2.9;stroke-linecap:round}.hour-chart .area{fill:url(#hourGrad)}.hour-chart .dot{fill:#fff;stroke:#80b6d8;stroke-width:2}
 .hour-bottom{display:flex;justify-content:space-between;margin-top:8px;padding-top:13px;border-top:1px solid #ecf1f5;color:#8298a7;font-size:11px}.hour-bottom strong{color:#4a819f;font-weight:670}.rain-grid{margin-top:8px;display:grid;grid-template-columns:repeat(12,1fr)}.rain-point{text-align:center;font-size:10px;color:#8b9da9;display:flex;align-items:center;flex-direction:column;gap:5px}.bar-track{height:28px;display:flex;align-items:flex-end}.bar{border-radius:5px 5px 2px 2px;width:21px;background:linear-gradient(0deg,#78b7e3,#badff3);min-height:2px}
-.weekly-grid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:17px}.week-panel{padding:29px 12px 26px;overflow:hidden}.week-scroller{overflow-x:auto;scrollbar-width:thin;scrollbar-color:#e1eaf0 transparent}.week-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));min-width:630px}.day{min-width:0;display:flex;align-items:center;flex-direction:column;padding:2px 8px;gap:14px;border-right:1px solid #ebf0f4}.day:last-child{border:0}.day-title{font-size:12px;color:#8798a5}.day:first-child .day-title{font-weight:710;color:#183b57}.day svg{height:35px;width:35px}.day-temp{font-size:15px;font-weight:710;white-space:nowrap;letter-spacing:-.02em}.day-temp span{font-weight:480;color:#a1aeb9}.range{height:4px;width:53px;background:#e4edf5;border-radius:8px;position:relative}.range:after{content:"";position:absolute;left:var(--pos);width:var(--width);top:0;bottom:0;background:linear-gradient(90deg,#8fb9db,#f5cb83);border-radius:5px}.day-rain{font-size:11px;color:#8c9eac}
+/* Seven-day component styles live in assets/forecast-style.css. */
 .air-panel{padding:27px 24px;display:flex;flex-direction:column;justify-content:space-between}.eyebrow{font-size:12px;color:#8d9ead}.air-value{font-size:52px;font-weight:490;line-height:1;margin-top:11px;letter-spacing:-.07em}.air-level{margin-top:5px;font-size:13px;color:#8296a6;font-weight:580}.air-scale{height:7px;position:relative;margin-top:26px;border-radius:7px;background:linear-gradient(90deg,#92c3a0,#bfd4a1,#e9d696,#e0a595)}.air-scale:after{content:"";position:absolute;left:var(--aqi-pos,20%);top:-4px;width:5px;height:15px;background:#2d4f62;border:3px solid white;box-sizing:content-box;border-radius:7px;transform:translateX(-50%)}.air-foot{color:#97a4ae;font-size:11px;margin-top:14px;line-height:1.6}
 .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:16px 0}.metric{padding:20px 27px;border-right:1px solid #ebeff3}.metric:last-child{border-right:0}.metric-title{font-size:12px;color:#8399a6;display:flex;align-items:center;gap:8px;font-weight:570}.metric-title svg{width:17px;height:17px}.metric-value{font-size:33px;margin-top:13px;font-weight:560;letter-spacing:-.05em;font-variant-numeric:tabular-nums}.metric-value small{font-size:13px;letter-spacing:0;color:#98a6b1;margin-left:5px;font-weight:540}.metric-caption{font-size:12px;color:#95a7b4;margin-top:3px}
 .notes{margin-top:28px;color:#8798a5;font-size:12px;line-height:1.75;max-width:820px}.notes a{text-decoration:underline;text-underline-offset:3px;color:#467a9c}.footer{margin-top:66px;padding-top:25px;padding-bottom:42px;border-top:1px solid #e5ebef;color:#8999a7;font-size:12px;display:flex;justify-content:space-between;gap:20px}.footer strong{color:#31526c;font-size:14px}.footer p{margin:4px 0 0}.footer .ref{text-align:right;white-space:nowrap}
@@ -186,6 +186,20 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
 <symbol id="i-fog" viewBox="0 0 40 40"><path d="M8 22h25a7 7 0 0 0 0-14 11 11 0 0 0-21 2.5A6.3 6.3 0 0 0 8 22" fill="#c3d6de"/><g stroke="#9cb9c1" stroke-width="2" stroke-linecap="round"><path d="M4 27h31M9 32h28M3 37h27"/></g></symbol>
 <symbol id="i-haze" viewBox="0 0 40 40"><circle cx="20" cy="14" r="8" fill="#ebc989" opacity=".8"/><g stroke="#c7b497" stroke-width="2.2" stroke-linecap="round"><path d="M3 23h33M7 29h29M3 35h30"/></g></symbol>
 <symbol id="i-dry" viewBox="0 0 40 40"><use href="#i-sun"/><path d="M28 27h8M28 31h6" stroke="#c9a169" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-sunrise" viewBox="0 0 40 40">
+ <path d="M5 31h30" fill="none" stroke="#a6c3d5" stroke-width="2" stroke-linecap="round"/>
+ <circle cx="20" cy="29" r="8" fill="#f4c579"/>
+ <path d="M9 27l-3-2m7-5-2-4m9 3v-5m7 6 2-4m2 11 3-2" fill="none" stroke="#edb868" stroke-width="2.1" stroke-linecap="round"/>
+ <path d="M20 4v7m-3-3 3 3 3-3" fill="none" stroke="#7da6c0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="rotate(180 20 8)"/>
+ <path d="M5 31h30" fill="none" stroke="#a6c3d5" stroke-width="2.2" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-sunset" viewBox="0 0 40 40">
+ <path d="M5 31h30" fill="none" stroke="#a6c3d5" stroke-width="2" stroke-linecap="round"/>
+ <circle cx="20" cy="29" r="8" fill="#f4b86e"/>
+ <path d="M9 27l-3-2m7-5-2-4m9 3v-5m7 6 2-4m2 11 3-2" fill="none" stroke="#e5ab61" stroke-width="2.1" stroke-linecap="round"/>
+ <path d="M20 4v8m-3-3 3 3 3-3" fill="none" stroke="#7da6c0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M5 31h30" fill="none" stroke="#a6c3d5" stroke-width="2.2" stroke-linecap="round"/>
+</symbol>
 <symbol id="i-moon" viewBox="0 0 40 40"><path d="M29 5A17 17 0 1 0 35 30 16.5 16.5 0 0 1 29 5Z" fill="#dceaf9"/></symbol>
 <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.8-7-11a7 7 0 1 1 14 0c0 4.2-7 11-7 11Z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
 <symbol id="i-therm" viewBox="0 0 24 24"><path d="M10 5a2 2 0 1 1 4 0v9a5 5 0 1 1-4 0V5Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v9" stroke="currentColor" stroke-width="1.6"/></symbol>
@@ -249,9 +263,9 @@ html:has(.weather-sheet[open]) { overflow: hidden; }
    <section class="sheet-section" id="sun-times">
     <div class="section-header"><h3>日出與日落</h3><span class="caption">Open-Meteo · 澳門時間</span></div>
     <div class="panel solar-panel">
-     <div class="solar-time-col"><div class="solar-label">日出</div><div class="solar-time" id="sunriseTime">—</div></div>
+     <div class="solar-time-col"><div class="solar-label"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-sunrise"/></svg><span>日出</span></div><div class="solar-time" id="sunriseTime">—</div></div>
      <div class="solar-center"><div class="solar-track" id="solarTrack" style="--sun-progress:0%" role="img" aria-label="日照進度"><span class="solar-fill"></span><span class="solar-dot"></span></div><div class="solar-status" id="solarStatus">暫未能取得</div></div>
-     <div class="solar-time-col"><div class="solar-label">日落</div><div class="solar-time" id="sunsetTime">—</div></div>
+     <div class="solar-time-col"><div class="solar-label"><svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-sunset"/></svg><span>日落</span></div><div class="solar-time" id="sunsetTime">—</div></div>
     </div>
    </section>
 
@@ -359,7 +373,7 @@ function resetUnverified(){
  $('rainChance').textContent='—';
  $('hourLabels').innerHTML='<div style="grid-column:span 12;text-align:left;color:#60768a;font-size:15px;padding:26px 0">逐小時預報暫未能取得。</div>';
  $('hourIcons').innerHTML='';$('hourTemps').innerHTML='';$('hourRains').innerHTML='';$('hourLine').setAttribute('d','');$('hourArea').setAttribute('d','');$('hourDots').innerHTML='';
- $('weekDays').innerHTML='<div style="grid-column:span 7;text-align:left;color:#60768a;font-size:15px;padding:22px">正在取得官方七日預報…</div>';
+ $('weekDays').innerHTML='<div class="week-empty">正在取得官方七日預報…</div>';
 }
 function renderHourly(hours){
  if(!hours.length)return;
